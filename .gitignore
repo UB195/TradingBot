@@ -62,3 +62,22 @@ captures/
 
 # macOS
 .DS_Store
+
+# Flutter
+.dart_tool/
+.packages
+.pub/
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android / Gradle
+.gradle/
+local.properties
+*.iml
+.idea/
+captures/
+
+# macOS
+.DS_Store
