@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class MarketTicker {
   final String symbol;
   final double currentPrice;

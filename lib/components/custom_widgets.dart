@@ -12,9 +12,9 @@ class StatusBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Text(
         label,
@@ -39,9 +39,7 @@ class MiniSparkline extends StatelessWidget {
     return SizedBox(
       height: 30,
       width: 80,
-      child: CustomPaint(
-        painter: _SparklinePainter(values, color),
-      ),
+      child: CustomPaint(painter: _SparklinePainter(values, color)),
     );
   }
 }
@@ -133,7 +131,11 @@ class CustomToast extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: TradingTheme.border),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.5), blurRadius: 10, offset: const Offset(0, 4)),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.5),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
       child: Row(
@@ -141,7 +143,13 @@ class CustomToast extends StatelessWidget {
         children: [
           const Icon(Icons.info_outline, color: TradingTheme.primary, size: 18),
           const SizedBox(width: 12),
-          Text(message, style: const TextStyle(color: TradingTheme.textPrimary, fontSize: 13)),
+          Text(
+            message,
+            style: const TextStyle(
+              color: TradingTheme.textPrimary,
+              fontSize: 13,
+            ),
+          ),
         ],
       ),
     );

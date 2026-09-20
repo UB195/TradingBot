@@ -15,24 +15,42 @@ class SideNavigation extends StatelessWidget {
 
   IconData _getIcon(String section) {
     switch (section) {
-      case 'Dashboard': return Icons.dashboard_outlined;
-      case 'Markets': return Icons.show_chart;
-      case 'Strategies': return Icons.psychology_outlined;
-      case 'Bots': return Icons.smart_toy_outlined;
-      case 'Signals': return Icons.sensors_outlined;
-      case 'Positions': return Icons.account_balance_wallet_outlined;
-      case 'Orders': return Icons.receipt_long_outlined;
-      case 'Portfolio': return Icons.pie_chart_outline;
-      case 'Risk': return Icons.gpp_maybe_outlined;
-      case 'Backtesting': return Icons.history_outlined;
-      case 'AI Research Lab': return Icons.science_outlined;
-      case 'Options': return Icons.layers_outlined;
-      case 'News & Events': return Icons.newspaper_outlined;
-      case 'Analytics': return Icons.analytics_outlined;
-      case 'Logs': return Icons.terminal_outlined;
-      case 'Broker': return Icons.account_tree_outlined;
-      case 'Settings': return Icons.settings_outlined;
-      default: return Icons.help_outline;
+      case 'Dashboard':
+        return Icons.dashboard_outlined;
+      case 'Markets':
+        return Icons.show_chart;
+      case 'Strategies':
+        return Icons.psychology_outlined;
+      case 'Bots':
+        return Icons.smart_toy_outlined;
+      case 'Signals':
+        return Icons.sensors_outlined;
+      case 'Positions':
+        return Icons.account_balance_wallet_outlined;
+      case 'Orders':
+        return Icons.receipt_long_outlined;
+      case 'Portfolio':
+        return Icons.pie_chart_outline;
+      case 'Risk':
+        return Icons.gpp_maybe_outlined;
+      case 'Backtesting':
+        return Icons.history_outlined;
+      case 'AI Research Lab':
+        return Icons.science_outlined;
+      case 'Options':
+        return Icons.layers_outlined;
+      case 'News & Events':
+        return Icons.newspaper_outlined;
+      case 'Analytics':
+        return Icons.analytics_outlined;
+      case 'Logs':
+        return Icons.terminal_outlined;
+      case 'Broker':
+        return Icons.account_tree_outlined;
+      case 'Settings':
+        return Icons.settings_outlined;
+      default:
+        return Icons.help_outline;
     }
   }
 
@@ -51,7 +69,11 @@ class SideNavigation extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Row(
               children: [
-                const Icon(Icons.auto_graph, color: TradingTheme.primary, size: 28),
+                const Icon(
+                  Icons.auto_graph,
+                  color: TradingTheme.primary,
+                  size: 28,
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
@@ -79,20 +101,28 @@ class SideNavigation extends StatelessWidget {
                     dense: true,
                     leading: Icon(
                       _getIcon(section),
-                      color: isSelected ? TradingTheme.primary : TradingTheme.textSecondary,
+                      color: isSelected
+                          ? TradingTheme.primary
+                          : TradingTheme.textSecondary,
                       size: 20,
                     ),
                     title: Text(
                       section,
                       style: TextStyle(
-                        color: isSelected ? TradingTheme.textPrimary : TradingTheme.textSecondary,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        color: isSelected
+                            ? TradingTheme.textPrimary
+                            : TradingTheme.textSecondary,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                         fontSize: 13,
                       ),
                     ),
                     onTap: () => onDestinationSelected(index),
                     selected: isSelected,
-                    selectedTileColor: TradingTheme.primary.withOpacity(0.08),
+                    selectedTileColor: TradingTheme.primary.withValues(
+                      alpha: 0.08,
+                    ),
                     hoverColor: TradingTheme.surfaceLight,
                   ),
                 );
@@ -104,7 +134,11 @@ class SideNavigation extends StatelessWidget {
             leading: const CircleAvatar(
               radius: 12,
               backgroundColor: TradingTheme.surfaceLight,
-              child: Icon(Icons.person, size: 16, color: TradingTheme.textSecondary),
+              child: Icon(
+                Icons.person,
+                size: 16,
+                color: TradingTheme.textSecondary,
+              ),
             ),
             title: const Text('Dev User', style: TextStyle(fontSize: 13)),
             subtitle: const Text('Pro Account', style: TextStyle(fontSize: 11)),

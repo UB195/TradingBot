@@ -14,10 +14,23 @@ class TradingState extends ChangeNotifier {
   String get statusFilter => _statusFilter;
 
   final List<String> sections = [
-    'Dashboard', 'Markets', 'Strategies', 'Bots', 'Signals',
-    'Positions', 'Orders', 'Portfolio', 'Risk', 'Backtesting',
-    'AI Research Lab', 'Options', 'News & Events', 'Analytics',
-    'Logs', 'Broker', 'Settings'
+    'Dashboard',
+    'Markets',
+    'Strategies',
+    'Bots',
+    'Signals',
+    'Positions',
+    'Orders',
+    'Portfolio',
+    'Risk',
+    'Backtesting',
+    'AI Research Lab',
+    'Options',
+    'News & Events',
+    'Analytics',
+    'Logs',
+    'Broker',
+    'Settings',
   ];
 
   // Data lists
@@ -29,36 +42,145 @@ class TradingState extends ChangeNotifier {
   List<LogEntry> logs = MockTradingService.getMockLogs();
 
   List<TradingOrder> orders = [
-    TradingOrder(id: 'o1', symbol: 'BTC/USDT', type: 'LIMIT', side: 'BUY', price: 95000.0, amount: 0.1, filledAmount: 0.0, status: 'PENDING', timestamp: DateTime.now()),
-    TradingOrder(id: 'o2', symbol: 'ETH/USDT', type: 'MARKET', side: 'SELL', price: 3450.0, amount: 1.5, filledAmount: 1.5, status: 'FILLED', timestamp: DateTime.now().subtract(const Duration(hours: 1))),
+    TradingOrder(
+      id: 'o1',
+      symbol: 'BTC/USDT',
+      type: 'LIMIT',
+      side: 'BUY',
+      price: 95000.0,
+      amount: 0.1,
+      filledAmount: 0.0,
+      status: 'PENDING',
+      timestamp: DateTime.now(),
+    ),
+    TradingOrder(
+      id: 'o2',
+      symbol: 'ETH/USDT',
+      type: 'MARKET',
+      side: 'SELL',
+      price: 3450.0,
+      amount: 1.5,
+      filledAmount: 1.5,
+      status: 'FILLED',
+      timestamp: DateTime.now().subtract(const Duration(hours: 1)),
+    ),
   ];
 
   List<PortfolioAsset> assets = [
-    PortfolioAsset(asset: 'USDT', name: 'Tether USD', balance: 145200.0, available: 95000.0, valueUsd: 145200.0, allocationPercent: 54.2),
-    PortfolioAsset(asset: 'BTC', name: 'Bitcoin', balance: 0.85, available: 0.60, valueUsd: 81957.4, allocationPercent: 30.6),
-    PortfolioAsset(asset: 'ETH', name: 'Ethereum', balance: 8.5, available: 8.5, valueUsd: 29331.3, allocationPercent: 11.0),
-    PortfolioAsset(asset: 'SOL', name: 'Solana', balance: 60.0, available: 60.0, valueUsd: 11118.0, allocationPercent: 4.2),
+    PortfolioAsset(
+      asset: 'USDT',
+      name: 'Tether USD',
+      balance: 145200.0,
+      available: 95000.0,
+      valueUsd: 145200.0,
+      allocationPercent: 54.2,
+    ),
+    PortfolioAsset(
+      asset: 'BTC',
+      name: 'Bitcoin',
+      balance: 0.85,
+      available: 0.60,
+      valueUsd: 81957.4,
+      allocationPercent: 30.6,
+    ),
+    PortfolioAsset(
+      asset: 'ETH',
+      name: 'Ethereum',
+      balance: 8.5,
+      available: 8.5,
+      valueUsd: 29331.3,
+      allocationPercent: 11.0,
+    ),
+    PortfolioAsset(
+      asset: 'SOL',
+      name: 'Solana',
+      balance: 60.0,
+      available: 60.0,
+      valueUsd: 11118.0,
+      allocationPercent: 4.2,
+    ),
   ];
 
   List<BacktestResult> backtests = [
-    BacktestResult(strategyName: 'Alpha Grid V2', symbol: 'BTC/USDT', timeframe: '1H', totalTrades: 342, winRate: 68.4, profitFactor: 1.85, netReturnPercent: 42.6, maxDrawdownPercent: 4.5),
-    BacktestResult(strategyName: 'Neural Momentum', symbol: 'ETH/USDT', timeframe: '15M', totalTrades: 812, winRate: 54.2, profitFactor: 1.32, netReturnPercent: 18.9, maxDrawdownPercent: 8.2),
+    BacktestResult(
+      strategyName: 'Alpha Grid V2',
+      symbol: 'BTC/USDT',
+      timeframe: '1H',
+      totalTrades: 342,
+      winRate: 68.4,
+      profitFactor: 1.85,
+      netReturnPercent: 42.6,
+      maxDrawdownPercent: 4.5,
+    ),
+    BacktestResult(
+      strategyName: 'Neural Momentum',
+      symbol: 'ETH/USDT',
+      timeframe: '15M',
+      totalTrades: 812,
+      winRate: 54.2,
+      profitFactor: 1.32,
+      netReturnPercent: 18.9,
+      maxDrawdownPercent: 8.2,
+    ),
   ];
 
   List<OptionContract> optionsContracts = [
-    OptionContract(symbol: 'BTC-28MAR26-100000-C', strikePrice: 100000.0, expiration: DateTime(2026, 3, 28), type: 'CALL', premium: 1420.0, impliedVolPercent: 48.5, delta: 0.42, openInterest: 1250),
-    OptionContract(symbol: 'BTC-28MAR26-90000-P', strikePrice: 90000.0, expiration: DateTime(2026, 3, 28), type: 'PUT', premium: 850.0, impliedVolPercent: 52.1, delta: -0.28, openInterest: 840),
+    OptionContract(
+      symbol: 'BTC-28MAR26-100000-C',
+      strikePrice: 100000.0,
+      expiration: DateTime(2026, 3, 28),
+      type: 'CALL',
+      premium: 1420.0,
+      impliedVolPercent: 48.5,
+      delta: 0.42,
+      openInterest: 1250,
+    ),
+    OptionContract(
+      symbol: 'BTC-28MAR26-90000-P',
+      strikePrice: 90000.0,
+      expiration: DateTime(2026, 3, 28),
+      type: 'PUT',
+      premium: 850.0,
+      impliedVolPercent: 52.1,
+      delta: -0.28,
+      openInterest: 840,
+    ),
   ];
 
   List<NewsItem> news = [
-    NewsItem(id: 'n1', title: 'Federal Reserve Announces Interest Rate Stability', source: 'Bloomberg', sentiment: 'NEUTRAL', timestamp: DateTime.now().subtract(const Duration(hours: 1)), summary: 'The Fed held steady on rates signaling strong underlying macro indicators.'),
-    NewsItem(id: 'n2', title: 'Bitcoin Hash Rate Reaches New All-Time High', source: 'CoinDesk', sentiment: 'BULLISH', timestamp: DateTime.now().subtract(const Duration(hours: 3)), summary: 'Network security grows as active miners deploy next-gen ASIC systems globally.'),
-    NewsItem(id: 'n3', title: 'Tech Stocks Experience Sudden Liquidation Wave', source: 'Reuters', sentiment: 'BEARISH', timestamp: DateTime.now().subtract(const Duration(hours: 5)), summary: 'Overleveraged long liquidations pull broad market indices down 2.1%.'),
+    NewsItem(
+      id: 'n1',
+      title: 'Federal Reserve Announces Interest Rate Stability',
+      source: 'Bloomberg',
+      sentiment: 'NEUTRAL',
+      timestamp: DateTime.now().subtract(const Duration(hours: 1)),
+      summary:
+          'The Fed held steady on rates signaling strong underlying macro indicators.',
+    ),
+    NewsItem(
+      id: 'n2',
+      title: 'Bitcoin Hash Rate Reaches New All-Time High',
+      source: 'CoinDesk',
+      sentiment: 'BULLISH',
+      timestamp: DateTime.now().subtract(const Duration(hours: 3)),
+      summary:
+          'Network security grows as active miners deploy next-gen ASIC systems globally.',
+    ),
+    NewsItem(
+      id: 'n3',
+      title: 'Tech Stocks Experience Sudden Liquidation Wave',
+      source: 'Reuters',
+      sentiment: 'BEARISH',
+      timestamp: DateTime.now().subtract(const Duration(hours: 5)),
+      summary:
+          'Overleveraged long liquidations pull broad market indices down 2.1%.',
+    ),
   ];
 
   // Strategy Builder data (mock)
   List<StrategyConfig> strategies = MockStrategyService.getMockStrategies();
-  Map<String, List<StrategyVersion>> versionHistory = MockStrategyService.getMockVersionHistory();
+  Map<String, List<StrategyVersion>> versionHistory =
+      MockStrategyService.getMockVersionHistory();
   int _strategyIdCounter = 100;
 
   // Toast message tracking
@@ -141,7 +263,13 @@ class TradingState extends ChangeNotifier {
     }
   }
 
-  void addOrder(String symbol, String side, String type, double price, double amount) {
+  void addOrder(
+    String symbol,
+    String side,
+    String type,
+    double price,
+    double amount,
+  ) {
     final newOrder = TradingOrder(
       id: 'o${orders.length + 1}',
       symbol: symbol,

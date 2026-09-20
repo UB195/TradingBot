@@ -531,7 +531,7 @@ class _StrategyBuilderScreenState extends State<StrategyBuilderScreen> {
             ),
           if (!isFirst) const SizedBox(width: 12),
           SizedBox(
-            width: 52,
+            width: 96,
             child: Tooltip(
               message: 'Negate this condition',
               child: InputDecorator(
@@ -1094,10 +1094,14 @@ class _StrategyBuilderScreenState extends State<StrategyBuilderScreen> {
               size: 22,
             ),
             const SizedBox(width: 10),
-            Text(
-              isEditing
-                  ? 'Strategy Builder — ${widget.existing!.name}'
-                  : 'Strategy Builder — New Strategy',
+            Expanded(
+              child: Text(
+                isEditing
+                    ? 'Strategy Builder — ${widget.existing!.name}'
+                    : 'Strategy Builder — New Strategy',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),

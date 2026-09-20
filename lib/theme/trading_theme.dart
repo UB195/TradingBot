@@ -20,18 +20,38 @@ class TradingTheme {
       scaffoldBackgroundColor: background,
       primaryColor: primary,
       colorScheme: const ColorScheme.dark(
-        background: background,
         surface: surface,
         primary: primary,
         secondary: secondary,
         error: bearish,
       ),
       textTheme: const TextTheme(
-        headlineMedium: TextStyle(color: textPrimary, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: -0.5),
-        titleLarge: TextStyle(color: textPrimary, fontSize: 18, fontWeight: FontWeight.w600),
-        bodyLarge: TextStyle(color: textPrimary, fontSize: 14, fontWeight: FontWeight.normal),
-        bodyMedium: TextStyle(color: textSecondary, fontSize: 13, fontWeight: FontWeight.normal),
-        labelSmall: TextStyle(color: textSecondary, fontSize: 11, fontWeight: FontWeight.w500),
+        headlineMedium: TextStyle(
+          color: textPrimary,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
+        ),
+        titleLarge: TextStyle(
+          color: textPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        bodyLarge: TextStyle(
+          color: textPrimary,
+          fontSize: 14,
+          fontWeight: FontWeight.normal,
+        ),
+        bodyMedium: TextStyle(
+          color: textSecondary,
+          fontSize: 13,
+          fontWeight: FontWeight.normal,
+        ),
+        labelSmall: TextStyle(
+          color: textSecondary,
+          fontSize: 11,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       cardTheme: CardThemeData(
         color: surface,

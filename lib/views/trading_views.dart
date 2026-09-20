@@ -12,7 +12,13 @@ class ViewContainer extends StatelessWidget {
   final Widget child;
   final List<Widget>? actions;
 
-  const ViewContainer({super.key, required this.title, this.subtitle, required this.child, this.actions});
+  const ViewContainer({
+    super.key,
+    required this.title,
+    this.subtitle,
+    required this.child,
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +33,19 @@ class ViewContainer extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
-                  if (subtitle != null) Text(subtitle!, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: TradingTheme.textSecondary)),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (subtitle != null)
+                    Text(
+                      subtitle!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: TradingTheme.textSecondary,
+                      ),
+                    ),
                 ],
               ),
               if (actions != null) Row(children: actions!),
@@ -57,7 +74,11 @@ class DashboardView extends StatelessWidget {
         const SizedBox(width: 16),
         const StatusIndicator(label: 'Data', isConnected: true),
         const SizedBox(width: 24),
-        TradingButton(label: 'Refresh', icon: Icons.refresh, onPressed: () => state.showToast('Refreshing system data...')),
+        TradingButton(
+          label: 'Refresh',
+          icon: Icons.refresh,
+          onPressed: () => state.showToast('Refreshing system data...'),
+        ),
       ],
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,63 +97,138 @@ class DashboardView extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   childAspectRatio: 1.6,
                   children: const [
-                    KpiCard(title: 'Portfolio Value', value: '\$267,606.70', subtext: '+2.4%', icon: Icons.account_balance_wallet),
-                    KpiCard(title: 'Available Capital', value: '\$95,000.00', subtext: 'Ready for deployment', icon: Icons.monetization_on),
-                    KpiCard(title: 'Today\'s P&L', value: '+\$1,240.50', valueColor: TradingTheme.bullish, subtext: '+1.1%', icon: Icons.trending_up),
-                    KpiCard(title: 'Overall P&L', value: '+\$24,532.80', valueColor: TradingTheme.bullish, subtext: '+24.5%', icon: Icons.show_chart),
-                    KpiCard(title: 'Realized P&L', value: '\$18,200.00', subtext: 'Booked gains', icon: Icons.attach_money),
-                    KpiCard(title: 'Unrealized P&L', value: '\$6,332.80', subtext: 'Paper gains', icon: Icons.bar_chart),
-                    KpiCard(title: 'Drawdown', value: '-1.2%', valueColor: TradingTheme.bearish, subtext: 'Current vs Peak', icon: Icons.warning),
-                    KpiCard(title: 'Risk Exposure', value: '65%', subtext: 'Portfolio at risk', icon: Icons.gpp_maybe),
+                    KpiCard(
+                      title: 'Portfolio Value',
+                      value: '\$267,606.70',
+                      subtext: '+2.4%',
+                      icon: Icons.account_balance_wallet,
+                    ),
+                    KpiCard(
+                      title: 'Available Capital',
+                      value: '\$95,000.00',
+                      subtext: 'Ready for deployment',
+                      icon: Icons.monetization_on,
+                    ),
+                    KpiCard(
+                      title: 'Today\'s P&L',
+                      value: '+\$1,240.50',
+                      valueColor: TradingTheme.bullish,
+                      subtext: '+1.1%',
+                      icon: Icons.trending_up,
+                    ),
+                    KpiCard(
+                      title: 'Overall P&L',
+                      value: '+\$24,532.80',
+                      valueColor: TradingTheme.bullish,
+                      subtext: '+24.5%',
+                      icon: Icons.show_chart,
+                    ),
+                    KpiCard(
+                      title: 'Realized P&L',
+                      value: '\$18,200.00',
+                      subtext: 'Booked gains',
+                      icon: Icons.attach_money,
+                    ),
+                    KpiCard(
+                      title: 'Unrealized P&L',
+                      value: '\$6,332.80',
+                      subtext: 'Paper gains',
+                      icon: Icons.bar_chart,
+                    ),
+                    KpiCard(
+                      title: 'Drawdown',
+                      value: '-1.2%',
+                      valueColor: TradingTheme.bearish,
+                      subtext: 'Current vs Peak',
+                      icon: Icons.warning,
+                    ),
+                    KpiCard(
+                      title: 'Risk Exposure',
+                      value: '65%',
+                      subtext: 'Portfolio at risk',
+                      icon: Icons.gpp_maybe,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Charts Row
                 const Row(
                   children: [
-                    Expanded(child: ChartContainer(title: 'Portfolio Equity Curve', child: MockChartPainter(color: TradingTheme.primary))),
+                    Expanded(
+                      child: ChartContainer(
+                        title: 'Portfolio Equity Curve',
+                        child: MockChartPainter(color: TradingTheme.primary),
+                      ),
+                    ),
                     SizedBox(width: 16),
-                    Expanded(child: ChartContainer(title: 'Drawdown History', child: MockChartPainter(color: TradingTheme.bearish))),
+                    Expanded(
+                      child: ChartContainer(
+                        title: 'Drawdown History',
+                        child: MockChartPainter(color: TradingTheme.bearish),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
-                
+
                 // Tables Row
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(flex: 2, child: DashboardActivePositions(state: state)),
+                    Expanded(
+                      flex: 2,
+                      child: DashboardActivePositions(state: state),
+                    ),
                     const SizedBox(width: 16),
-                    Expanded(flex: 1, child: DashboardRecentOrders(state: state)),
+                    Expanded(
+                      flex: 1,
+                      child: DashboardRecentOrders(state: state),
+                    ),
                   ],
                 ),
               ],
             ),
           ),
-          
+
           const SizedBox(width: 24),
-          
+
           // Right Column - Sidebar (1/4 width)
           Expanded(
             flex: 1,
             child: ListView(
               children: [
-                const SidebarCard(title: 'Market Status', child: MarketStatusWidget()),
+                const SidebarCard(
+                  title: 'Market Status',
+                  child: MarketStatusWidget(),
+                ),
                 const SizedBox(height: 16),
-                SidebarCard(title: 'Live Trading Signals', child: LiveSignalsWidget(state: state)),
+                SidebarCard(
+                  title: 'Live Trading Signals',
+                  child: LiveSignalsWidget(state: state),
+                ),
                 const SizedBox(height: 16),
-                SidebarCard(title: 'System Health', child: SystemStatusWidget(state: state)),
+                SidebarCard(
+                  title: 'System Health',
+                  child: SystemStatusWidget(state: state),
+                ),
                 const SizedBox(height: 16),
                 const SidebarCard(
-                  title: 'Risk Alerts', 
+                  title: 'Risk Alerts',
                   backgroundColor: Color(0x33F44336),
                   child: RiskAlertsWidget(),
                 ),
                 const SizedBox(height: 24),
-                EmergencyKillButton(onPressed: () => _showConfirmation(context, 'EMERGENCY KILL', 'Halt all bots and close all positions immediately?', () {
-                  state.showToast('KILL SWITCH ACTIVATED');
-                })),
+                EmergencyKillButton(
+                  onPressed: () => _showConfirmation(
+                    context,
+                    'EMERGENCY KILL',
+                    'Halt all bots and close all positions immediately?',
+                    () {
+                      state.showToast('KILL SWITCH ACTIVATED');
+                    },
+                  ),
+                ),
               ],
             ),
           ),
@@ -147,15 +243,23 @@ class DashboardView extends StatelessWidget {
 class StatusIndicator extends StatelessWidget {
   final String label;
   final bool isConnected;
-  const StatusIndicator({super.key, required this.label, required this.isConnected});
+  const StatusIndicator({
+    super.key,
+    required this.label,
+    required this.isConnected,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          width: 8, height: 8,
-          decoration: BoxDecoration(color: isConnected ? Colors.green : Colors.red, shape: BoxShape.circle),
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: isConnected ? Colors.green : Colors.red,
+            shape: BoxShape.circle,
+          ),
         ),
         const SizedBox(width: 6),
         Text(label, style: const TextStyle(fontSize: 12)),
@@ -193,9 +297,7 @@ class MockChartPainter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _ChartPainter(color),
-    );
+    return CustomPaint(painter: _ChartPainter(color));
   }
 }
 
@@ -205,7 +307,10 @@ class _ChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color..strokeWidth = 2..style = PaintingStyle.stroke;
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
     final path = Path();
     path.moveTo(0, size.height * 0.8);
     path.lineTo(size.width * 0.2, size.height * 0.6);
@@ -224,7 +329,12 @@ class SidebarCard extends StatelessWidget {
   final String title;
   final Widget child;
   final Color? backgroundColor;
-  const SidebarCard({super.key, required this.title, required this.child, this.backgroundColor});
+  const SidebarCard({
+    super.key,
+    required this.title,
+    required this.child,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +345,10 @@ class SidebarCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            ),
             const SizedBox(height: 12),
             child,
           ],
@@ -265,8 +378,21 @@ class MarketStatusWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(l, style: const TextStyle(color: TradingTheme.textSecondary, fontSize: 12)),
-          Text(v, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 12)),
+          Text(
+            l,
+            style: const TextStyle(
+              color: TradingTheme.textSecondary,
+              fontSize: 12,
+            ),
+          ),
+          Text(
+            v,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: color,
+              fontSize: 12,
+            ),
+          ),
         ],
       ),
     );
@@ -280,22 +406,47 @@ class LiveSignalsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: state.signals.take(3).map((s) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: Row(
-          children: [
-            Icon(Icons.notifications_active, size: 14, color: s.type.contains('BUY') ? TradingTheme.bullish : TradingTheme.bearish),
-            const SizedBox(width: 8),
-            Expanded(child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('${s.symbol}: ${s.type}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                Text(s.source, style: const TextStyle(fontSize: 10, color: TradingTheme.textSecondary)),
-              ],
-            )),
-          ],
-        ),
-      )).toList(),
+      children: state.signals
+          .take(3)
+          .map(
+            (s) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.notifications_active,
+                    size: 14,
+                    color: s.type.contains('BUY')
+                        ? TradingTheme.bullish
+                        : TradingTheme.bearish,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${s.symbol}: ${s.type}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          s.source,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: TradingTheme.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }
@@ -309,16 +460,26 @@ class SystemStatusWidget extends StatelessWidget {
     final runningCount = state.bots.where((b) => b.status == 'RUNNING').length;
     final totalCount = state.bots.length;
     final progress = totalCount > 0 ? runningCount / totalCount : 0.0;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Running Bots: $runningCount / $totalCount', style: const TextStyle(fontSize: 12)),
+        Text(
+          'Running Bots: $runningCount / $totalCount',
+          style: const TextStyle(fontSize: 12),
+        ),
         const SizedBox(height: 6),
-        LinearProgressIndicator(value: progress, color: TradingTheme.accentCyan, backgroundColor: TradingTheme.surfaceLight),
+        LinearProgressIndicator(
+          value: progress,
+          color: TradingTheme.accentCyan,
+          backgroundColor: TradingTheme.surfaceLight,
+        ),
         const SizedBox(height: 8),
         const Text('Orders Today: 124', style: TextStyle(fontSize: 12)),
-        const Text('Active Tasks: MeanReversion Processor', style: TextStyle(fontSize: 10, color: TradingTheme.textSecondary)),
+        const Text(
+          'Active Tasks: MeanReversion Processor',
+          style: TextStyle(fontSize: 10, color: TradingTheme.textSecondary),
+        ),
       ],
     );
   }
@@ -332,8 +493,14 @@ class RiskAlertsWidget extends StatelessWidget {
     return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('• High Slippage on ETH/USDT', style: TextStyle(fontSize: 11, color: TradingTheme.bearish)),
-        Text('• Margin usage approaching 70%', style: TextStyle(fontSize: 11, color: Colors.orange)),
+        Text(
+          '• High Slippage on ETH/USDT',
+          style: TextStyle(fontSize: 11, color: TradingTheme.bearish),
+        ),
+        Text(
+          '• Margin usage approaching 70%',
+          style: TextStyle(fontSize: 11, color: Colors.orange),
+        ),
       ],
     );
   }
@@ -350,12 +517,15 @@ class EmergencyKillButton extends StatelessWidget {
       height: 60,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: TradingTheme.bearish, 
+          backgroundColor: TradingTheme.bearish,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         onPressed: onPressed,
         icon: const Icon(Icons.close, color: Colors.white),
-        label: const Text('EMERGENCY KILL SWITCH', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        label: const Text(
+          'EMERGENCY KILL SWITCH',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -373,24 +543,73 @@ class DashboardActivePositions extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Active Positions', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Active Positions',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
             DataTable(
               columnSpacing: 24,
               columns: const [
-                DataColumn(label: Text('Symbol', style: TextStyle(fontSize: 12))),
+                DataColumn(
+                  label: Text('Symbol', style: TextStyle(fontSize: 12)),
+                ),
                 DataColumn(label: Text('Side', style: TextStyle(fontSize: 12))),
                 DataColumn(label: Text('Size', style: TextStyle(fontSize: 12))),
-                DataColumn(label: Text('Entry', style: TextStyle(fontSize: 12))),
+                DataColumn(
+                  label: Text('Entry', style: TextStyle(fontSize: 12)),
+                ),
                 DataColumn(label: Text('PnL', style: TextStyle(fontSize: 12))),
               ],
-              rows: state.positions.map((p) => DataRow(cells: [
-                DataCell(Text(p.symbol, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
-                DataCell(StatusBadge(label: p.side, color: p.side == 'LONG' ? TradingTheme.bullish : TradingTheme.bearish)),
-                DataCell(Text(p.size.toString(), style: const TextStyle(fontSize: 12))),
-                DataCell(Text('\$${p.entryPrice}', style: const TextStyle(fontSize: 12))),
-                DataCell(Text('\$${p.pnl.toStringAsFixed(2)}', style: TextStyle(fontSize: 12, color: p.pnl >= 0 ? TradingTheme.bullish : TradingTheme.bearish, fontWeight: FontWeight.bold))),
-              ])).toList(),
+              rows: state.positions
+                  .map(
+                    (p) => DataRow(
+                      cells: [
+                        DataCell(
+                          Text(
+                            p.symbol,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          StatusBadge(
+                            label: p.side,
+                            color: p.side == 'LONG'
+                                ? TradingTheme.bullish
+                                : TradingTheme.bearish,
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            p.size.toString(),
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            '\$${p.entryPrice}',
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            '\$${p.pnl.toStringAsFixed(2)}',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: p.pnl >= 0
+                                  ? TradingTheme.bullish
+                                  : TradingTheme.bearish,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ),
@@ -411,22 +630,57 @@ class DashboardRecentOrders extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Recent Orders', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Recent Orders',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
-            ...state.orders.take(5).map((o) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(o.symbol, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                    Text(o.timestamp.toIso8601String().substring(11,16), style: const TextStyle(fontSize: 9, color: TradingTheme.textSecondary)),
-                  ]),
-                  Text(o.side, style: TextStyle(fontSize: 10, color: o.side == 'BUY' ? TradingTheme.bullish : TradingTheme.bearish)),
-                  StatusBadge(label: o.status, color: o.status == 'FILLED' ? TradingTheme.bullish : TradingTheme.primary),
-                ],
-              ),
-            )),
+            ...state.orders
+                .take(5)
+                .map(
+                  (o) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              o.symbol,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              o.timestamp.toIso8601String().substring(11, 16),
+                              style: const TextStyle(
+                                fontSize: 9,
+                                color: TradingTheme.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          o.side,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: o.side == 'BUY'
+                                ? TradingTheme.bullish
+                                : TradingTheme.bearish,
+                          ),
+                        ),
+                        StatusBadge(
+                          label: o.status,
+                          color: o.status == 'FILLED'
+                              ? TradingTheme.bullish
+                              : TradingTheme.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
           ],
         ),
       ),
@@ -463,24 +717,45 @@ class MarketsView extends StatelessWidget {
           separatorBuilder: (context, index) => const Divider(),
           itemBuilder: (context, index) {
             final t = state.tickers[index];
-            if (state.searchQuery.isNotEmpty && !t.symbol.toLowerCase().contains(state.searchQuery.toLowerCase())) {
+            if (state.searchQuery.isNotEmpty &&
+                !t.symbol.toLowerCase().contains(
+                  state.searchQuery.toLowerCase(),
+                )) {
               return const SizedBox.shrink();
             }
             final isPos = t.change24h >= 0;
             return ListTile(
-              title: Text(t.symbol, style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Vol 24h: \$${(t.volume24h / 1000000000).toStringAsFixed(2)}B'),
+              title: Text(
+                t.symbol,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Vol 24h: \$${(t.volume24h / 1000000000).toStringAsFixed(2)}B',
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  MiniSparkline(values: t.sparkline, color: isPos ? TradingTheme.bullish : TradingTheme.bearish),
+                  MiniSparkline(
+                    values: t.sparkline,
+                    color: isPos ? TradingTheme.bullish : TradingTheme.bearish,
+                  ),
                   const SizedBox(width: 24),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('\$${t.currentPrice.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                      Text('${isPos ? '+' : ''}${t.change24h}%', style: TextStyle(color: isPos ? TradingTheme.bullish : TradingTheme.bearish)),
+                      Text(
+                        '\$${t.currentPrice.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${isPos ? '+' : ''}${t.change24h}%',
+                        style: TextStyle(
+                          color: isPos
+                              ? TradingTheme.bullish
+                              : TradingTheme.bearish,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -500,10 +775,14 @@ class StrategiesView extends StatelessWidget {
 
   Color _statusColor(String status) {
     switch (status) {
-      case 'PRODUCTION': return TradingTheme.accentCyan;
-      case 'BETA': return TradingTheme.primary;
-      case 'BACKTESTING': return TradingTheme.accentPurple;
-      default: return TradingTheme.textSecondary;
+      case 'PRODUCTION':
+        return TradingTheme.accentCyan;
+      case 'BETA':
+        return TradingTheme.primary;
+      case 'BACKTESTING':
+        return TradingTheme.accentPurple;
+      default:
+        return TradingTheme.textSecondary;
     }
   }
 
@@ -517,9 +796,11 @@ class StrategiesView extends StatelessWidget {
           icon: Icons.architecture,
           onPressed: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => StrategyBuilderScreen(state: state)),
+            MaterialPageRoute(
+              builder: (_) => StrategyBuilderScreen(state: state),
+            ),
           ),
-        )
+        ),
       ],
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -544,47 +825,121 @@ class StrategiesView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Expanded(child: Text(s.name, style: Theme.of(context).textTheme.titleLarge, overflow: TextOverflow.ellipsis)),
-                          StatusBadge(label: s.status, color: _statusColor(s.status)),
+                          Expanded(
+                            child: Text(
+                              s.name,
+                              style: Theme.of(context).textTheme.titleLarge,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          StatusBadge(
+                            label: s.status,
+                            color: _statusColor(s.status),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 6),
-                      Text('${s.id} • ${s.version} • ${s.market} • ${s.timeframe} • ${s.instrument}', style: Theme.of(context).textTheme.labelSmall),
+                      Text(
+                        '${s.id} • ${s.version} • ${s.market} • ${s.timeframe} • ${s.instrument}',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
                       const SizedBox(height: 8),
-                      Text(s.description, style: Theme.of(context).textTheme.bodyMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
+                      Text(
+                        s.description,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Win Rate', style: Theme.of(context).textTheme.labelSmall), Text('${s.winRate}%', style: const TextStyle(fontWeight: FontWeight.bold))]),
-                      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Sharpe Ratio', style: Theme.of(context).textTheme.labelSmall), Text('${s.sharpeRatio}', style: const TextStyle(fontWeight: FontWeight.bold))]),
-                      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text('Total Profit', style: Theme.of(context).textTheme.labelSmall), Text('+\$${s.totalProfit.toStringAsFixed(0)}', style: const TextStyle(color: TradingTheme.bullish, fontWeight: FontWeight.bold))]),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Win Rate',
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                          Text(
+                            '${s.winRate}%',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Sharpe Ratio',
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                          Text(
+                            '${s.sharpeRatio}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Total Profit',
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                          Text(
+                            '+\$${s.totalProfit.toStringAsFixed(0)}',
+                            style: const TextStyle(
+                              color: TradingTheme.bullish,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                   const Divider(height: 1),
                   Row(
                     children: [
                       OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(foregroundColor: TradingTheme.textPrimary, side: const BorderSide(color: TradingTheme.border), padding: const EdgeInsets.symmetric(horizontal: 12), textStyle: const TextStyle(fontSize: 12)),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: TradingTheme.textPrimary,
+                          side: const BorderSide(color: TradingTheme.border),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          textStyle: const TextStyle(fontSize: 12),
+                        ),
                         onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => StrategyBuilderScreen(state: state, existing: s)),
+                          MaterialPageRoute(
+                            builder: (_) => StrategyBuilderScreen(
+                              state: state,
+                              existing: s,
+                            ),
+                          ),
                         ),
                         icon: const Icon(Icons.edit_outlined, size: 14),
                         label: const Text('Edit'),
                       ),
                       const SizedBox(width: 8),
                       OutlinedButton.icon(
-                        style: OutlinedButton.styleFrom(foregroundColor: TradingTheme.textPrimary, side: const BorderSide(color: TradingTheme.border), padding: const EdgeInsets.symmetric(horizontal: 12), textStyle: const TextStyle(fontSize: 12)),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: TradingTheme.textPrimary,
+                          side: const BorderSide(color: TradingTheme.border),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          textStyle: const TextStyle(fontSize: 12),
+                        ),
                         onPressed: () => state.duplicateStrategy(s),
                         icon: const Icon(Icons.copy_outlined, size: 14),
                         label: const Text('Duplicate'),
                       ),
                       const Spacer(),
-                      Text('${s.entryConditions.length} entry rules', style: Theme.of(context).textTheme.labelSmall),
+                      Text(
+                        '${s.entryConditions.length} entry rules',
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -609,14 +964,20 @@ class BotsView extends StatelessWidget {
         TradingButton(
           label: 'Deploy New Bot',
           icon: Icons.add,
-          onPressed: () => state.showToast('Deploying new bot infrastructure...'),
+          onPressed: () =>
+              state.showToast('Deploying new bot infrastructure...'),
         ),
         const SizedBox(width: 12),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: TradingTheme.bearish),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: TradingTheme.bearish,
+          ),
           onPressed: () => state.showToast('HALTING ALL BOTS'),
-          child: const Text('HALT ALL BOTS', style: TextStyle(color: Colors.white)),
-        )
+          child: const Text(
+            'HALT ALL BOTS',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
       ],
       child: Column(
         children: [
@@ -640,11 +1001,23 @@ class BotsView extends StatelessWidget {
   Widget _buildFilters() {
     return Row(
       children: [
-        const FilterChip(label: Text('All Bots (5)'), selected: true, onSelected: null),
+        const FilterChip(
+          label: Text('All Bots (5)'),
+          selected: true,
+          onSelected: null,
+        ),
         const SizedBox(width: 8),
-        const FilterChip(label: Text('Market: Crypto'), selected: false, onSelected: null),
+        const FilterChip(
+          label: Text('Market: Crypto'),
+          selected: false,
+          onSelected: null,
+        ),
         const SizedBox(width: 8),
-        const FilterChip(label: Text('Status: Running'), selected: false, onSelected: null),
+        const FilterChip(
+          label: Text('Status: Running'),
+          selected: false,
+          onSelected: null,
+        ),
         const Spacer(),
         SizedBox(
           width: 250,
@@ -685,19 +1058,45 @@ class BotCardWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Text(bot.name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(
+                          bot.name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         const SizedBox(width: 12),
                         StatusBadge(label: bot.status, color: statusColor),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text('${bot.id} | Strategy: ${bot.strategyName} | Pair: ${bot.marketSymbol}', style: const TextStyle(color: TradingTheme.textSecondary, fontSize: 12)),
+                    Text(
+                      '${bot.id} | Strategy: ${bot.strategyName} | Pair: ${bot.marketSymbol}',
+                      style: const TextStyle(
+                        color: TradingTheme.textSecondary,
+                        fontSize: 12,
+                      ),
+                    ),
                   ],
                 ),
                 const Spacer(),
-                IconButton(icon: Icon(bot.status == 'RUNNING' ? Icons.pause : Icons.play_arrow, color: bot.status == 'RUNNING' ? Colors.orange : Colors.green), onPressed: () => state.toggleBotStatus(bot.id)),
-                IconButton(icon: const Icon(Icons.stop, color: TradingTheme.bearish), onPressed: () {}),
-                IconButton(icon: const Icon(Icons.edit_outlined), onPressed: () {}),
+                IconButton(
+                  icon: Icon(
+                    bot.status == 'RUNNING' ? Icons.pause : Icons.play_arrow,
+                    color: bot.status == 'RUNNING'
+                        ? Colors.orange
+                        : Colors.green,
+                  ),
+                  onPressed: () => state.toggleBotStatus(bot.id),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.stop, color: TradingTheme.bearish),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit_outlined),
+                  onPressed: () {},
+                ),
                 IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
               ],
             ),
@@ -705,9 +1104,22 @@ class BotCardWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _metric('Allocated Capital', '\$${bot.allocation.toStringAsFixed(0)}'),
-                _metric('Today\'s P&L', '+\$142.20', color: TradingTheme.bullish),
-                _metric('Net Profit', '${bot.netProfit >= 0 ? '+' : ''}\$${bot.netProfit.toStringAsFixed(0)}', color: bot.netProfit >= 0 ? TradingTheme.bullish : TradingTheme.bearish),
+                _metric(
+                  'Allocated Capital',
+                  '\$${bot.allocation.toStringAsFixed(0)}',
+                ),
+                _metric(
+                  'Today\'s P&L',
+                  '+\$142.20',
+                  color: TradingTheme.bullish,
+                ),
+                _metric(
+                  'Net Profit',
+                  '${bot.netProfit >= 0 ? '+' : ''}\$${bot.netProfit.toStringAsFixed(0)}',
+                  color: bot.netProfit >= 0
+                      ? TradingTheme.bullish
+                      : TradingTheme.bearish,
+                ),
                 _metric('Win Rate', '64%'),
                 _metric('Max Drawdown', '4.2%', color: TradingTheme.bearish),
                 _metric('Uptime', bot.runtime),
@@ -720,7 +1132,13 @@ class BotCardWidget extends StatelessWidget {
                 const SizedBox(width: 16),
                 _tag(Icons.radar, 'Last Signal: BUY (88%)'),
                 const Spacer(),
-                const Text('Version v2.4.1', style: TextStyle(fontSize: 10, color: TradingTheme.textSecondary)),
+                const Text(
+                  'Version v2.4.1',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: TradingTheme.textSecondary,
+                  ),
+                ),
               ],
             ),
           ],
@@ -733,8 +1151,21 @@ class BotCardWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l, style: const TextStyle(fontSize: 10, color: TradingTheme.textSecondary)),
-        Text(v, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: color)),
+        Text(
+          l,
+          style: const TextStyle(
+            fontSize: 10,
+            color: TradingTheme.textSecondary,
+          ),
+        ),
+        Text(
+          v,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
       ],
     );
   }
@@ -744,7 +1175,13 @@ class BotCardWidget extends StatelessWidget {
       children: [
         Icon(i, size: 12, color: TradingTheme.textSecondary),
         const SizedBox(width: 4),
-        Text(t, style: const TextStyle(fontSize: 11, color: TradingTheme.textSecondary)),
+        Text(
+          t,
+          style: const TextStyle(
+            fontSize: 11,
+            color: TradingTheme.textSecondary,
+          ),
+        ),
       ],
     );
   }
@@ -767,16 +1204,30 @@ class SignalsView extends StatelessWidget {
             final sig = state.signals[index];
             final isBuy = sig.type.contains('BUY');
             return ListTile(
-              leading: Icon(Icons.radar, color: isBuy ? TradingTheme.bullish : TradingTheme.bearish),
-              title: Text('${sig.symbol} - Entry Target: \$${sig.price}', style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Trigger Node: ${sig.source} | Confidence Quotient: ${(sig.strength * 100).toStringAsFixed(1)}%'),
+              leading: Icon(
+                Icons.radar,
+                color: isBuy ? TradingTheme.bullish : TradingTheme.bearish,
+              ),
+              title: Text(
+                '${sig.symbol} - Entry Target: \$${sig.price}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Trigger Node: ${sig.source} | Confidence Quotient: ${(sig.strength * 100).toStringAsFixed(1)}%',
+              ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  StatusBadge(label: sig.type, color: isBuy ? TradingTheme.bullish : TradingTheme.bearish),
+                  StatusBadge(
+                    label: sig.type,
+                    color: isBuy ? TradingTheme.bullish : TradingTheme.bearish,
+                  ),
                   const SizedBox(height: 4),
-                  Text(sig.timestamp.toIso8601String().substring(11, 19), style: Theme.of(context).textTheme.labelSmall),
+                  Text(
+                    sig.timestamp.toIso8601String().substring(11, 19),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                 ],
               ),
             );
@@ -797,7 +1248,7 @@ class PositionsView extends StatelessWidget {
     return ViewContainer(
       title: 'Live Inventory Positions',
       child: Card(
-        child: state.positions.isEmpty 
+        child: state.positions.isEmpty
             ? const Center(child: Text('No active inventory positions open.'))
             : ListView.separated(
                 itemCount: state.positions.length,
@@ -806,22 +1257,49 @@ class PositionsView extends StatelessWidget {
                   final pos = state.positions[index];
                   final isLong = pos.side == 'LONG';
                   return ListTile(
-                    leading: StatusBadge(label: '${pos.side} ${pos.leverage}x', color: isLong ? TradingTheme.bullish : TradingTheme.bearish),
-                    title: Text(pos.symbol, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    subtitle: Text('Size: ${pos.size} units | Entry: \$${pos.entryPrice} | Mark: \$${pos.markPrice}'),
+                    leading: StatusBadge(
+                      label: '${pos.side} ${pos.leverage}x',
+                      color: isLong
+                          ? TradingTheme.bullish
+                          : TradingTheme.bearish,
+                    ),
+                    title: Text(
+                      pos.symbol,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Size: ${pos.size} units | Entry: \$${pos.entryPrice} | Mark: \$${pos.markPrice}',
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           '\$${pos.pnl.toStringAsFixed(2)} (${pos.pnlPercent}%)',
-                          style: TextStyle(color: pos.pnl >= 0 ? TradingTheme.bullish : TradingTheme.bearish, fontWeight: FontWeight.bold, fontSize: 15),
+                          style: TextStyle(
+                            color: pos.pnl >= 0
+                                ? TradingTheme.bullish
+                                : TradingTheme.bearish,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
                         ),
                         const SizedBox(width: 24),
                         OutlinedButton(
-                          onPressed: () => _showConfirmation(context, 'Market Close Position', 'Execute immediate market clearance for ${pos.symbol}?', () {
-                            state.closePosition(pos.id);
-                          }),
-                          child: const Text('Close', style: TextStyle(color: TradingTheme.bearish)),
+                          onPressed: () => _showConfirmation(
+                            context,
+                            'Market Close Position',
+                            'Execute immediate market clearance for ${pos.symbol}?',
+                            () {
+                              state.closePosition(pos.id);
+                            },
+                          ),
+                          child: const Text(
+                            'Close',
+                            style: TextStyle(color: TradingTheme.bearish),
+                          ),
                         ),
                       ],
                     ),
@@ -845,8 +1323,9 @@ class OrdersView extends StatelessWidget {
       actions: [
         TradingButton(
           label: 'Submit Mock Order',
-          onPressed: () => state.addOrder('BTC/USDT', 'BUY', 'LIMIT', 96000.0, 0.05),
-        )
+          onPressed: () =>
+              state.addOrder('BTC/USDT', 'BUY', 'LIMIT', 96000.0, 0.05),
+        ),
       ],
       child: Card(
         child: ListView.separated(
@@ -855,20 +1334,40 @@ class OrdersView extends StatelessWidget {
           itemBuilder: (context, index) {
             final order = state.orders[index];
             return ListTile(
-              title: Text('${order.side} ${order.type} - ${order.symbol}', style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Amount: ${order.amount} | Price: \$${order.price} | Time: ${order.timestamp.toIso8601String().substring(11,19)}'),
-              leading: Icon(order.side == 'BUY' ? Icons.south_west : Icons.north_east, color: order.side == 'BUY' ? TradingTheme.bullish : TradingTheme.bearish),
+              title: Text(
+                '${order.side} ${order.type} - ${order.symbol}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Amount: ${order.amount} | Price: \$${order.price} | Time: ${order.timestamp.toIso8601String().substring(11, 19)}',
+              ),
+              leading: Icon(
+                order.side == 'BUY' ? Icons.south_west : Icons.north_east,
+                color: order.side == 'BUY'
+                    ? TradingTheme.bullish
+                    : TradingTheme.bearish,
+              ),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  StatusBadge(label: order.status, color: order.status == 'FILLED' ? TradingTheme.bullish : (order.status == 'PENDING' ? TradingTheme.primary : TradingTheme.textSecondary)),
+                  StatusBadge(
+                    label: order.status,
+                    color: order.status == 'FILLED'
+                        ? TradingTheme.bullish
+                        : (order.status == 'PENDING'
+                              ? TradingTheme.primary
+                              : TradingTheme.textSecondary),
+                  ),
                   if (order.status == 'PENDING') ...[
                     const SizedBox(width: 12),
                     IconButton(
-                      icon: const Icon(Icons.cancel_outlined, color: TradingTheme.textSecondary),
+                      icon: const Icon(
+                        Icons.cancel_outlined,
+                        color: TradingTheme.textSecondary,
+                      ),
                       onPressed: () => state.cancelOrder(order.id),
-                    )
-                  ]
+                    ),
+                  ],
                 ],
               ),
             );
@@ -893,9 +1392,23 @@ class PortfolioView extends StatelessWidget {
         children: [
           const Row(
             children: [
-              Expanded(child: KpiCard(title: 'Total Wallet Equity', value: '\$267,606.70', subtext: 'Collateralized asset valuation', icon: Icons.pie_chart)),
+              Expanded(
+                child: KpiCard(
+                  title: 'Total Wallet Equity',
+                  value: '\$267,606.70',
+                  subtext: 'Collateralized asset valuation',
+                  icon: Icons.pie_chart,
+                ),
+              ),
               SizedBox(width: 16),
-              Expanded(child: KpiCard(title: 'Available Margin', value: '\$95,000.00', subtext: 'Free for next algorithmic strategy hooks', icon: Icons.lock_open)),
+              Expanded(
+                child: KpiCard(
+                  title: 'Available Margin',
+                  value: '\$95,000.00',
+                  subtext: 'Free for next algorithmic strategy hooks',
+                  icon: Icons.lock_open,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 24),
@@ -907,22 +1420,44 @@ class PortfolioView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final a = state.assets[index];
                   return ListTile(
-                    leading: CircleAvatar(backgroundColor: TradingTheme.surfaceLight, child: Text(a.asset, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12))),
-                    title: Text(a.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text('Total Balance: ${a.balance} | Available: ${a.available}'),
+                    leading: CircleAvatar(
+                      backgroundColor: TradingTheme.surfaceLight,
+                      child: Text(
+                        a.asset,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      a.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      'Total Balance: ${a.balance} | Available: ${a.available}',
+                    ),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('\$${a.valueUsd.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                        Text('${a.allocationPercent}% weight', style: const TextStyle(color: TradingTheme.textSecondary)),
+                        Text(
+                          '\$${a.valueUsd.toStringAsFixed(2)}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '${a.allocationPercent}% weight',
+                          style: const TextStyle(
+                            color: TradingTheme.textSecondary,
+                          ),
+                        ),
                       ],
                     ),
                   );
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -954,31 +1489,81 @@ class RiskView extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   childAspectRatio: 2.2,
                   children: [
-                    _riskLimitCard('Max Risk per Trade', '0.8%', '1.0%', 0.8, Colors.green),
-                    _riskLimitCard('Max Daily Loss', '\$1,200', '\$2,000', 0.6, Colors.green),
-                    _riskLimitCard('Max Weekly Loss', '\$4,500', '\$5,000', 0.9, Colors.orange),
-                    _riskLimitCard('Max Drawdown', '4.2%', '5.0%', 0.84, Colors.orange),
-                    _riskLimitCard('Max Leverage', '3.4x', '5.0x', 0.68, Colors.green),
-                    _riskLimitCard('Sector Exposure (TECH)', '28%', '30%', 0.93, Colors.red),
+                    _riskLimitCard(
+                      'Max Risk per Trade',
+                      '0.8%',
+                      '1.0%',
+                      0.8,
+                      Colors.green,
+                    ),
+                    _riskLimitCard(
+                      'Max Daily Loss',
+                      '\$1,200',
+                      '\$2,000',
+                      0.6,
+                      Colors.green,
+                    ),
+                    _riskLimitCard(
+                      'Max Weekly Loss',
+                      '\$4,500',
+                      '\$5,000',
+                      0.9,
+                      Colors.orange,
+                    ),
+                    _riskLimitCard(
+                      'Max Drawdown',
+                      '4.2%',
+                      '5.0%',
+                      0.84,
+                      Colors.orange,
+                    ),
+                    _riskLimitCard(
+                      'Max Leverage',
+                      '3.4x',
+                      '5.0x',
+                      0.68,
+                      Colors.green,
+                    ),
+                    _riskLimitCard(
+                      'Sector Exposure (TECH)',
+                      '28%',
+                      '30%',
+                      0.93,
+                      Colors.red,
+                    ),
                   ],
                 ),
                 const SizedBox(height: 24),
                 Card(
-                  color: TradingTheme.primary.withOpacity(0.05),
+                  color: TradingTheme.primary.withValues(alpha: 0.05),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
                       children: [
                         const Icon(Icons.security, color: TradingTheme.primary),
                         const SizedBox(width: 16),
-                        const Expanded(child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Global Risk Safeguard Active', style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('Pre-execution engine is blocking all orders exceeding these limits.', style: TextStyle(fontSize: 11, color: TradingTheme.textSecondary)),
-                          ],
-                        )),
-                        OutlinedButton(onPressed: () {}, child: const Text('Edit Risk Profile')),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Global Risk Safeguard Active',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Pre-execution engine is blocking all orders exceeding these limits.',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: TradingTheme.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        OutlinedButton(
+                          onPressed: () {},
+                          child: const Text('Edit Risk Profile'),
+                        ),
                       ],
                     ),
                   ),
@@ -992,7 +1577,7 @@ class RiskView extends StatelessWidget {
             child: ListView(
               children: [
                 SidebarCard(
-                  title: 'Exposure Monitoring', 
+                  title: 'Exposure Monitoring',
                   child: Column(
                     children: [
                       _monitoringRow('Total Exposure', '\$142,500'),
@@ -1004,17 +1589,25 @@ class RiskView extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 SidebarCard(
-                  title: 'Risk Alerts Log', 
+                  title: 'Risk Alerts Log',
                   child: Column(
                     children: [
                       _alertItem('TECH Sector limit reached (93%)', Colors.red),
-                      _alertItem('Weekly loss approaching threshold', Colors.orange),
-                      _alertItem('High volatility detected in Crypto', Colors.green),
+                      _alertItem(
+                        'Weekly loss approaching threshold',
+                        Colors.orange,
+                      ),
+                      _alertItem(
+                        'High volatility detected in Crypto',
+                        Colors.green,
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 24),
-                EmergencyKillButton(onPressed: () => state.showToast('KILL SWITCH ACTIVATED')),
+                EmergencyKillButton(
+                  onPressed: () => state.showToast('KILL SWITCH ACTIVATED'),
+                ),
               ],
             ),
           ),
@@ -1023,7 +1616,13 @@ class RiskView extends StatelessWidget {
     );
   }
 
-  Widget _riskLimitCard(String name, String cur, String lim, double prog, Color color) {
+  Widget _riskLimitCard(
+    String name,
+    String cur,
+    String lim,
+    double prog,
+    Color color,
+  ) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -1033,11 +1632,31 @@ class RiskView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                Text(
+                  name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
+                ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(4), border: Border.all(color: color)),
-                  child: Text(prog > 0.9 ? 'CRITICAL' : (prog > 0.8 ? 'WARNING' : 'SAFE'), style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold)),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: color),
+                  ),
+                  child: Text(
+                    prog > 0.9 ? 'CRITICAL' : (prog > 0.8 ? 'WARNING' : 'SAFE'),
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -1046,11 +1665,22 @@ class RiskView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Current: $cur', style: const TextStyle(fontSize: 12)),
-                Text('Limit: $lim', style: const TextStyle(fontSize: 12, color: TradingTheme.textSecondary)),
+                Text(
+                  'Limit: $lim',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: TradingTheme.textSecondary,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
-            LinearProgressIndicator(value: prog, color: color, backgroundColor: TradingTheme.surfaceLight, minHeight: 6),
+            LinearProgressIndicator(
+              value: prog,
+              color: color,
+              backgroundColor: TradingTheme.surfaceLight,
+              minHeight: 6,
+            ),
           ],
         ),
       ),
@@ -1063,7 +1693,13 @@ class RiskView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(l, style: const TextStyle(color: TradingTheme.textSecondary, fontSize: 12)),
+          Text(
+            l,
+            style: const TextStyle(
+              color: TradingTheme.textSecondary,
+              fontSize: 12,
+            ),
+          ),
           Text(v, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
         ],
       ),
@@ -1095,7 +1731,12 @@ class BacktestingView extends StatelessWidget {
     return ViewContainer(
       title: 'Historical Sandbox Backtester',
       actions: [
-        TradingButton(label: 'Execute Historic Run', icon: Icons.play_arrow, onPressed: () => state.showToast('Backtest engine thread spawned successfully.'))
+        TradingButton(
+          label: 'Execute Historic Run',
+          icon: Icons.play_arrow,
+          onPressed: () =>
+              state.showToast('Backtest engine thread spawned successfully.'),
+        ),
       ],
       child: Column(
         children: [
@@ -1104,11 +1745,53 @@ class BacktestingView extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  Expanded(child: DropdownButtonFormField<String>(value: 'Alpha Mean Reversion', decoration: const InputDecoration(labelText: 'Strategy Model'), items: const [DropdownMenuItem(value: 'Alpha Mean Reversion', child: Text('Alpha Mean Reversion'))], onChanged: (v){})),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      initialValue: 'Alpha Mean Reversion',
+                      decoration: const InputDecoration(
+                        labelText: 'Strategy Model',
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'Alpha Mean Reversion',
+                          child: Text('Alpha Mean Reversion'),
+                        ),
+                      ],
+                      onChanged: (v) {},
+                    ),
+                  ),
                   const SizedBox(width: 16),
-                  Expanded(child: DropdownButtonFormField<String>(value: 'BTC/USDT', decoration: const InputDecoration(labelText: 'Target Ticker Pair'), items: const [DropdownMenuItem(value: 'BTC/USDT', child: Text('BTC/USDT'))], onChanged: (v){})),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      initialValue: 'BTC/USDT',
+                      decoration: const InputDecoration(
+                        labelText: 'Target Ticker Pair',
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'BTC/USDT',
+                          child: Text('BTC/USDT'),
+                        ),
+                      ],
+                      onChanged: (v) {},
+                    ),
+                  ),
                   const SizedBox(width: 16),
-                  Expanded(child: DropdownButtonFormField<String>(value: '30 Days', decoration: const InputDecoration(labelText: 'Backtest Window'), items: const [DropdownMenuItem(value: '30 Days', child: Text('Last 30 Days'))], onChanged: (v){})),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      initialValue: '30 Days',
+                      decoration: const InputDecoration(
+                        labelText: 'Backtest Window',
+                      ),
+                      items: const [
+                        DropdownMenuItem(
+                          value: '30 Days',
+                          child: Text('Last 30 Days'),
+                        ),
+                      ],
+                      onChanged: (v) {},
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -1122,22 +1805,39 @@ class BacktestingView extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final b = state.backtests[index];
                   return ListTile(
-                    leading: const Icon(Icons.analytics, color: TradingTheme.accentCyan),
-                    title: Text(b.strategyName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Text('Pair: ${b.symbol} | Frame: ${b.timeframe} | Total Trades: ${b.totalTrades}'),
+                    leading: const Icon(
+                      Icons.analytics,
+                      color: TradingTheme.accentCyan,
+                    ),
+                    title: Text(
+                      b.strategyName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      'Pair: ${b.symbol} | Frame: ${b.timeframe} | Total Trades: ${b.totalTrades}',
+                    ),
                     trailing: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text('Net Return: +${b.netReturnPercent}%', style: const TextStyle(color: TradingTheme.bullish, fontWeight: FontWeight.bold)),
-                        Text('Max DD: -${b.maxDrawdownPercent}% | Profit Factor: ${b.profitFactor}', style: Theme.of(context).textTheme.labelSmall),
+                        Text(
+                          'Net Return: +${b.netReturnPercent}%',
+                          style: const TextStyle(
+                            color: TradingTheme.bullish,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Max DD: -${b.maxDrawdownPercent}% | Profit Factor: ${b.profitFactor}',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                       ],
                     ),
                   );
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -1157,15 +1857,40 @@ class AiResearchLabView extends StatelessWidget {
         children: [
           const Row(
             children: [
-              Expanded(child: KpiCard(title: 'Transformer Precision', value: '94.2%', subtext: 'Directional bias matrix accuracy', icon: Icons.memory)),
+              Expanded(
+                child: KpiCard(
+                  title: 'Transformer Precision',
+                  value: '94.2%',
+                  subtext: 'Directional bias matrix accuracy',
+                  icon: Icons.memory,
+                ),
+              ),
               SizedBox(width: 16),
-              Expanded(child: KpiCard(title: 'Feature Vector Dimension', value: '1,024', subtext: 'Real-time telemetry inputs mapped', icon: Icons.hub)),
+              Expanded(
+                child: KpiCard(
+                  title: 'Feature Vector Dimension',
+                  value: '1,024',
+                  subtext: 'Real-time telemetry inputs mapped',
+                  icon: Icons.hub,
+                ),
+              ),
               SizedBox(width: 16),
-              Expanded(child: KpiCard(title: 'Sentiment Index Score', value: '+0.68', valueColor: TradingTheme.bullish, subtext: 'Highly optimistic market stance', icon: Icons.mood)),
+              Expanded(
+                child: KpiCard(
+                  title: 'Sentiment Index Score',
+                  value: '+0.68',
+                  valueColor: TradingTheme.bullish,
+                  subtext: 'Highly optimistic market stance',
+                  icon: Icons.mood,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 24),
-          Text('Active Neural Inference Pipeline Weights', style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            'Active Neural Inference Pipeline Weights',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 12),
           Card(
             child: Padding(
@@ -1173,21 +1898,42 @@ class AiResearchLabView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Order Book Imbalance Ratio Weights (Inference Confidence: 87.5%)'),
+                  const Text(
+                    'Order Book Imbalance Ratio Weights (Inference Confidence: 87.5%)',
+                  ),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(value: 0.875, color: TradingTheme.accentCyan, backgroundColor: TradingTheme.surfaceLight, minHeight: 8),
+                  LinearProgressIndicator(
+                    value: 0.875,
+                    color: TradingTheme.accentCyan,
+                    backgroundColor: TradingTheme.surfaceLight,
+                    minHeight: 8,
+                  ),
                   const SizedBox(height: 20),
-                  const Text('Macro Sentiment Analysis Correlation (Inference Confidence: 68.2%)'),
+                  const Text(
+                    'Macro Sentiment Analysis Correlation (Inference Confidence: 68.2%)',
+                  ),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(value: 0.682, color: TradingTheme.accentPurple, backgroundColor: TradingTheme.surfaceLight, minHeight: 8),
+                  LinearProgressIndicator(
+                    value: 0.682,
+                    color: TradingTheme.accentPurple,
+                    backgroundColor: TradingTheme.surfaceLight,
+                    minHeight: 8,
+                  ),
                   const SizedBox(height: 20),
-                  const Text('Funding Rate Arbitrage Index (Inference Confidence: 91.4%)'),
+                  const Text(
+                    'Funding Rate Arbitrage Index (Inference Confidence: 91.4%)',
+                  ),
                   const SizedBox(height: 8),
-                  LinearProgressIndicator(value: 0.914, color: TradingTheme.bullish, backgroundColor: TradingTheme.surfaceLight, minHeight: 8),
+                  LinearProgressIndicator(
+                    value: 0.914,
+                    color: TradingTheme.bullish,
+                    backgroundColor: TradingTheme.surfaceLight,
+                    minHeight: 8,
+                  ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -1211,15 +1957,32 @@ class OptionsView extends StatelessWidget {
             final opt = state.optionsContracts[index];
             final isCall = opt.type == 'CALL';
             return ListTile(
-              leading: Icon(isCall ? Icons.arrow_upward : Icons.arrow_downward, color: isCall ? TradingTheme.bullish : TradingTheme.bearish),
-              title: Text(opt.symbol, style: const TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Premium Cost: \$${opt.premium} | Delta: ${opt.delta} | Open Interest: ${opt.openInterest}'),
+              leading: Icon(
+                isCall ? Icons.arrow_upward : Icons.arrow_downward,
+                color: isCall ? TradingTheme.bullish : TradingTheme.bearish,
+              ),
+              title: Text(
+                opt.symbol,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Premium Cost: \$${opt.premium} | Delta: ${opt.delta} | Open Interest: ${opt.openInterest}',
+              ),
               trailing: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('Strike: \$${opt.strikePrice}', style: const TextStyle(fontWeight: FontWeight.bold, color: TradingTheme.primary)),
-                  Text('IV: ${opt.impliedVolPercent}%', style: Theme.of(context).textTheme.labelSmall),
+                  Text(
+                    'Strike: \$${opt.strikePrice}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: TradingTheme.primary,
+                    ),
+                  ),
+                  Text(
+                    'IV: ${opt.impliedVolPercent}%',
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                 ],
               ),
             );
@@ -1257,14 +2020,26 @@ class NewsEventsView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(n.source.toUpperCase(), style: Theme.of(context).textTheme.labelSmall),
+                      Text(
+                        n.source.toUpperCase(),
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
                       StatusBadge(label: n.sentiment, color: sc),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Text(n.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  Text(
+                    n.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  Text(n.summary, style: Theme.of(context).textTheme.bodyMedium),
+                  Text(
+                    n.summary,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ],
               ),
             ),
@@ -1289,15 +2064,36 @@ class AnalyticsView extends StatelessWidget {
         children: [
           const Row(
             children: [
-              Expanded(child: KpiCard(title: 'Profit Factor Index', value: '1.92', subtext: 'Gross gains vs gross losses ratio')),
+              Expanded(
+                child: KpiCard(
+                  title: 'Profit Factor Index',
+                  value: '1.92',
+                  subtext: 'Gross gains vs gross losses ratio',
+                ),
+              ),
               SizedBox(width: 16),
-              Expanded(child: KpiCard(title: 'Sortino Risk Multiplier', value: '2.45', subtext: 'Downside deviation benchmark ratio')),
+              Expanded(
+                child: KpiCard(
+                  title: 'Sortino Risk Multiplier',
+                  value: '2.45',
+                  subtext: 'Downside deviation benchmark ratio',
+                ),
+              ),
               SizedBox(width: 16),
-              Expanded(child: KpiCard(title: 'Average Trade Duration', value: '42 mins', subtext: 'High-velocity automation profile')),
+              Expanded(
+                child: KpiCard(
+                  title: 'Average Trade Duration',
+                  value: '42 mins',
+                  subtext: 'High-velocity automation profile',
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 24),
-          Text('Equity Growth Trajectory Placeholder Canvas', style: Theme.of(context).textTheme.titleLarge),
+          Text(
+            'Equity Growth Trajectory Placeholder Canvas',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           const SizedBox(height: 12),
           Expanded(
             child: Container(
@@ -1310,14 +2106,21 @@ class AnalyticsView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.stacked_line_chart, size: 64, color: TradingTheme.textSecondary),
+                    Icon(
+                      Icons.stacked_line_chart,
+                      size: 64,
+                      color: TradingTheme.textSecondary,
+                    ),
                     SizedBox(height: 16),
-                    Text('High-resolution Vector Chart rendering pipeline engine nominal.', style: TextStyle(color: TradingTheme.textSecondary)),
+                    Text(
+                      'High-resolution Vector Chart rendering pipeline engine nominal.',
+                      style: TextStyle(color: TradingTheme.textSecondary),
+                    ),
                   ],
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -1352,7 +2155,7 @@ class LogsView extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 4.0),
               child: Text(
-                '[${log.timestamp.toIso8601String().substring(11,19)}] [${log.type}] [${log.source}]: ${log.message}',
+                '[${log.timestamp.toIso8601String().substring(11, 19)}] [${log.type}] [${log.source}]: ${log.message}',
                 style: TextStyle(
                   fontFamily: 'Courier',
                   fontSize: 12,
@@ -1381,27 +2184,50 @@ class BrokerView extends StatelessWidget {
           const Card(
             child: ListTile(
               leading: Icon(Icons.lan, color: TradingTheme.bullish),
-              title: Text('Binance Advanced API Stream Endpoint', style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text('Latency: 24ms | Protocol: WebSockets Secure (WSS)'),
-              trailing: StatusBadge(label: 'CONNECTED', color: TradingTheme.bullish),
+              title: Text(
+                'Binance Advanced API Stream Endpoint',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                'Latency: 24ms | Protocol: WebSockets Secure (WSS)',
+              ),
+              trailing: StatusBadge(
+                label: 'CONNECTED',
+                color: TradingTheme.bullish,
+              ),
             ),
           ),
           const SizedBox(height: 12),
           const Card(
             child: ListTile(
               leading: Icon(Icons.lan_outlined, color: TradingTheme.bullish),
-              title: Text('Coinbase Exchange Liquidity Core', style: TextStyle(fontWeight: FontWeight.bold)),
+              title: Text(
+                'Coinbase Exchange Liquidity Core',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               subtitle: Text('Latency: 45ms | Protocol: FIX 4.4 Engine'),
-              trailing: StatusBadge(label: 'CONNECTED', color: TradingTheme.bullish),
+              trailing: StatusBadge(
+                label: 'CONNECTED',
+                color: TradingTheme.bullish,
+              ),
             ),
           ),
           const SizedBox(height: 12),
           const Card(
             child: ListTile(
-              leading: Icon(Icons.lan_outlined, color: TradingTheme.textSecondary),
-              title: Text('Kraken Professional Backup Node', style: TextStyle(fontWeight: FontWeight.bold)),
+              leading: Icon(
+                Icons.lan_outlined,
+                color: TradingTheme.textSecondary,
+              ),
+              title: Text(
+                'Kraken Professional Backup Node',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               subtitle: Text('Standby fallback routing channel offline'),
-              trailing: StatusBadge(label: 'STANDBY', color: TradingTheme.textSecondary),
+              trailing: StatusBadge(
+                label: 'STANDBY',
+                color: TradingTheme.textSecondary,
+              ),
             ),
           ),
         ],
@@ -1427,25 +2253,49 @@ class SettingsView extends StatelessWidget {
                 ListTile(
                   title: const Text('Dark Pro Fintech UI Mode'),
                   subtitle: const Text('High-contrast optimized layout grid'),
-                  trailing: Switch(value: true, onChanged: (v){}),
+                  trailing: Switch(value: true, onChanged: (v) {}),
                 ),
                 const Divider(),
                 const ListTile(
                   title: Text('Maximum Order Leverage Threshold Cap'),
-                  subtitle: Text('Safety engine auto-rejects risk parameters exceeding cap'),
-                  trailing: Text('20x Max Cap', style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    'Safety engine auto-rejects risk parameters exceeding cap',
+                  ),
+                  trailing: Text(
+                    '20x Max Cap',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const Divider(),
                 ListTile(
-                  title: const Text('Emergency Universal Liquidation Circuit Breaker'),
-                  subtitle: const Text('Immediately flags clearance for all live positions globally if triggered'),
+                  title: const Text(
+                    'Emergency Universal Liquidation Circuit Breaker',
+                  ),
+                  subtitle: const Text(
+                    'Immediately flags clearance for all live positions globally if triggered',
+                  ),
                   trailing: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: TradingTheme.bearish),
-                    onPressed: () => _showConfirmation(context, 'Global Liquidation Circuit Breaker', 'DANGER: Trigger global clearance immediately?', () {
-                      state.positions.clear();
-                      state.showToast('Circuit breaker activated. All positions closed.');
-                    }),
-                    child: const Text('ARM TRIGGER', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: TradingTheme.bearish,
+                    ),
+                    onPressed: () => _showConfirmation(
+                      context,
+                      'Global Liquidation Circuit Breaker',
+                      'DANGER: Trigger global clearance immediately?',
+                      () {
+                        state.positions.clear();
+                        state.showToast(
+                          'Circuit breaker activated. All positions closed.',
+                        );
+                      },
+                    ),
+                    child: const Text(
+                      'ARM TRIGGER',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -1458,7 +2308,12 @@ class SettingsView extends StatelessWidget {
 }
 
 // Global modal workflow confirmation helper
-void _showConfirmation(BuildContext context, String title, String message, VoidCallback onConfirm) {
+void _showConfirmation(
+  BuildContext context,
+  String title,
+  String message,
+  VoidCallback onConfirm,
+) {
   showDialog(
     context: context,
     builder: (context) {
@@ -1467,12 +2322,20 @@ void _showConfirmation(BuildContext context, String title, String message, VoidC
         content: Text(message),
         actions: [
           TextButton(
-            child: const Text('Cancel', style: TextStyle(color: TradingTheme.textSecondary)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: TradingTheme.textSecondary),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: TradingTheme.bearish),
-            child: const Text('Confirm Execution', style: TextStyle(color: Colors.white)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: TradingTheme.bearish,
+            ),
+            child: const Text(
+              'Confirm Execution',
+              style: TextStyle(color: Colors.white),
+            ),
             onPressed: () {
               Navigator.pop(context);
               onConfirm();

@@ -30,7 +30,10 @@ class TopMarketTicker extends StatelessWidget {
               children: [
                 Text(
                   ticker.symbol,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Text(

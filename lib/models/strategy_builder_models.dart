@@ -5,9 +5,11 @@ class IndicatorDef {
   final String category;
   final String hint;
   final List<String> comparators;
-  final bool supportsIndicatorCompare; // can be compared against another indicator
+  final bool
+  supportsIndicatorCompare; // can be compared against another indicator
   final List<String>? periods;
-  final List<String>? valueOptions; // fixed set of values (e.g. Market Regime states)
+  final List<String>?
+  valueOptions; // fixed set of values (e.g. Market Regime states)
 
   const IndicatorDef({
     required this.name,
@@ -27,7 +29,8 @@ class StrategyCondition {
   final String? period;
   final String comparator;
   final String compareTo; // 'VALUE' | 'INDICATOR'
-  final String value; // literal value or indicator name when compareTo == 'INDICATOR'
+  final String
+  value; // literal value or indicator name when compareTo == 'INDICATOR'
   final String connector; // 'FIRST' | 'AND' | 'OR'
   final bool not;
 

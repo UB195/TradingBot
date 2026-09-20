@@ -31,9 +31,9 @@ class KpiCard extends StatelessWidget {
               children: [
                 Text(
                   title.toUpperCase(),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    letterSpacing: 1,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(letterSpacing: 1),
                 ),
                 if (icon != null)
                   Icon(icon, size: 18, color: TradingTheme.textSecondary),
@@ -49,10 +49,7 @@ class KpiCard extends StatelessWidget {
             ),
             if (subtext.isNotEmpty) ...[
               const SizedBox(height: 6),
-              Text(
-                subtext,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text(subtext, style: Theme.of(context).textTheme.bodyMedium),
             ],
           ],
         ),

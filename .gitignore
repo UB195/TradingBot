@@ -27,11 +27,15 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.packages
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
+build/
 /coverage/
+
+# Legacy Flutter generated metadata
+.flutter-plugins
 
 # Symbolication related
 app.*.symbols
@@ -39,45 +43,10 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android / Gradle
+.gradle/
+local.properties
+captures/
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Flutter
-.dart_tool/
-.packages
-.pub/
-.pub-cache/
-build/
-.flutter-plugins
-.flutter-plugins-dependencies
-
-# Android / Gradle
-.gradle/
-local.properties
-*.iml
-.idea/
-captures/
-
-# macOS
-.DS_Store
-
-# Flutter
-.dart_tool/
-.packages
-.pub/
-.pub-cache/
-build/
-.flutter-plugins
-.flutter-plugins-dependencies
-
-# Android / Gradle
-.gradle/
-local.properties
-*.iml
-.idea/
-captures/
-
-# macOS
-.DS_Store

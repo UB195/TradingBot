@@ -11,7 +11,8 @@ void main() {
 }
 
 class TradingBotApp extends StatelessWidget {
-  final TradingState? state; // injectable for tests; defaults to a fresh instance
+  final TradingState?
+  state; // injectable for tests; defaults to a fresh instance
 
   const TradingBotApp({super.key, this.state});
 
@@ -46,24 +47,42 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
 
   Widget _buildActiveView(int index) {
     switch (index) {
-      case 0: return DashboardView(state: _state);
-      case 1: return MarketsView(state: _state);
-      case 2: return StrategiesView(state: _state);
-      case 3: return BotsView(state: _state);
-      case 4: return SignalsView(state: _state);
-      case 5: return PositionsView(state: _state);
-      case 6: return OrdersView(state: _state);
-      case 7: return PortfolioView(state: _state);
-      case 8: return RiskView(state: _state);
-      case 9: return BacktestingView(state: _state);
-      case 10: return AiResearchLabView(state: _state);
-      case 11: return OptionsView(state: _state);
-      case 12: return NewsEventsView(state: _state);
-      case 13: return AnalyticsView(state: _state);
-      case 14: return LogsView(state: _state);
-      case 15: return BrokerView(state: _state);
-      case 16: return SettingsView(state: _state);
-      default: return DashboardView(state: _state);
+      case 0:
+        return DashboardView(state: _state);
+      case 1:
+        return MarketsView(state: _state);
+      case 2:
+        return StrategiesView(state: _state);
+      case 3:
+        return BotsView(state: _state);
+      case 4:
+        return SignalsView(state: _state);
+      case 5:
+        return PositionsView(state: _state);
+      case 6:
+        return OrdersView(state: _state);
+      case 7:
+        return PortfolioView(state: _state);
+      case 8:
+        return RiskView(state: _state);
+      case 9:
+        return BacktestingView(state: _state);
+      case 10:
+        return AiResearchLabView(state: _state);
+      case 11:
+        return OptionsView(state: _state);
+      case 12:
+        return NewsEventsView(state: _state);
+      case 13:
+        return AnalyticsView(state: _state);
+      case 14:
+        return LogsView(state: _state);
+      case 15:
+        return BrokerView(state: _state);
+      case 16:
+        return SettingsView(state: _state);
+      default:
+        return DashboardView(state: _state);
     }
   }
 
