@@ -15,7 +15,7 @@ void main() {
 
     // Verify that the trading platform title is found.
     expect(find.text('TRADINGBOT'), findsOneWidget);
-    expect(find.text('Trading Command Center'), findsOneWidget);
+    expect(find.text('Paper Trading Command Center'), findsOneWidget);
 
     // Reset surface size
     await tester.binding.setSurfaceSize(null);

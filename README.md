@@ -1,58 +1,67 @@
-# Trading Bot
+# TradingBot — Paper Trading
 
-Trading Bot is a cross-platform Flutter paper-trading prototype. It presents a
-trading dashboard, mock strategies, simulated positions and orders, risk views,
-and backtesting-style sample data.
+TradingBot is a cross-platform Flutter paper-trading application. Phase 2 adds
+a deterministic, persistent simulation pipeline:
 
-No real broker is connected. Market data, account values, strategy results,
-orders, fills, and trading actions are simulated in local application state.
-Nothing in this repository should be used to place or manage live trades.
+```text
+replay ticks → moving-average strategy → central risk gate → simulated fill
+             → positions, cash, equity and P&L → local persistence → dashboard
+```
+
+This project does not connect to a broker, accept API credentials, consume live
+market data, or place real orders. Every displayed order and fill is simulated.
+
+## Features
+
+- timestamped, replayable BTC/USDT sample ticks;
+- moving-average crossover signals that occur only on crossings;
+- mandatory pre-order risk validation;
+- configurable fees and directional slippage;
+- long and short position opening, increasing, reducing, closing and reversal;
+- paper cash, equity, realized P&L and mark-to-market unrealized P&L;
+- persistent orders, fills, positions, risk settings, strategies and audit log;
+- persistent emergency stop with an explicit reset action;
+- duplicate market-event and signal protection; and
+- start, stop and confirmed reset controls in the Paper Trading dashboard.
 
 ## Supported platforms
 
-The repository contains Flutter runners for:
-
-- Android
-- iOS
-- Web
-- macOS
-- Linux
-- Windows
-
-Platform availability at runtime depends on the host operating system and its
-installed toolchains. For example, iOS and macOS builds require macOS and
-Xcode, while Windows desktop builds require Windows and Visual Studio.
+Flutter runners are retained for Android, iOS, web, macOS, Linux and Windows.
+The host still needs the platform's normal Flutter toolchain. The local snapshot
+store uses Flutter's `shared_preferences` plugin, which has implementations for
+all six targets.
 
 ## Project structure
 
-- `lib/` — application UI, models, mock services, state, and theme
-- `test/` — Flutter widget and application tests
-- `android/`, `ios/`, `web/`, `macos/`, `linux/`, `windows/` — Flutter platform
-  runners
-- `docs/architecture.md` — planned separation of strategy, risk, and execution
-- `pubspec.yaml` — Dart and Flutter dependencies and project metadata
+- `lib/domain/` — models, ports, moving-average strategy, risk gate and fill math
+- `lib/application/` — paper engine and Flutter-facing controller
+- `lib/data/` — replay data, strategy mapping and persistence adapters
+- `lib/state/` — application state and legacy-view projections
+- `lib/views/` — dashboard, Strategy Builder and supporting screens
+- `test/` — deterministic domain, persistence, state and widget tests
+- `docs/architecture.md` — architecture, formulas and design trade-offs
 
-The previous root-level native Android/Jetpack Compose prototype has been
-archived in the `archive/native-android-before-flutter-cleanup` Git branch and
-is not part of the active application.
+The deleted native Android prototype remains only on
+`archive/native-android-before-flutter-cleanup` and is not part of this branch.
 
 ## Setup and run
 
-Install a current Flutter SDK and the toolchain for the platform you want to
-run. Then, from the repository root:
+Install Flutter and the toolchain for the desired target, then run:
 
 ```sh
-flutter doctor
 flutter pub get
+flutter doctor
 flutter devices
 flutter run -d <device-id>
 ```
 
-Common examples include `flutter run -d chrome` for web and
-`flutter run -d macos` on a configured Mac. Use an ID reported by
-`flutter devices` for other targets.
+Open the dashboard and select **Start Paper Engine**. The bundled replay runs
+at a fixed cadence and stops when its deterministic ticks are exhausted. Use
+**Reset Paper Account** (with confirmation) to clear simulated trading history
+and replay progress. Strategy definitions and an active emergency stop are
+deliberately preserved by an account reset.
 
-## Formatting, analysis, and tests
+## Quality checks
 
 ```sh
 dart format --output=none --set-exit-if-changed lib test
@@ -60,27 +69,34 @@ flutter analyze
 flutter test
 ```
 
-Run `dart format lib test` to apply formatting changes.
+Tests require no network, broker account, market-data service or credentials.
 
-## Safety limitations
+## Risk controls
 
-- There is no broker connection or live order route.
-- Displayed market, portfolio, profit-and-loss, risk, and execution data is
-  mock data and may not reflect real market behavior.
-- UI controls that appear to place, cancel, pause, or stop trading only mutate
-  simulated local state.
-- Risk limits and emergency controls shown by the prototype are not operational
-  safeguards for real capital.
-- The project has not been validated for production availability, security,
-  regulatory compliance, or financial decision-making.
+Every signal passes through one central gate before a simulated fill. The gate
+rejects invalid quantities or prices, duplicate signals/orders, an active
+emergency stop, insufficient paper cash, excessive order value, excessive
+position value and excessive total exposure. Rejected orders and reasons are
+stored and shown on the dashboard.
 
-Do not provide API credentials or use this prototype for live trading.
+The emergency stop immediately stops the replay, blocks every new order,
+records its reason and timestamp, and persists across restarts. Launching the
+application never clears it; only **Reset Emergency Stop** does so, and reset
+does not restart the engine.
 
-## Planned architecture
+## Limitations and safety
 
-Future paper-trading work should keep strategy generation, centralized risk
-validation, and order execution as separate responsibilities. Every proposed
-order must pass a fail-closed risk gate that enforces maximum order value,
-daily-loss, leverage, and emergency-stop controls before execution. See
-[`docs/architecture.md`](docs/architecture.md) for the preserved design notes
-and the limitations of the archived Kotlin concept.
+- Prices and timestamps come from a small bundled replay, not a live feed.
+- Market orders fill immediately; there is no order book, partial fill, latency,
+  corporate-action, funding, margin or exchange-calendar model.
+- Amounts use Dart `double`, which is adequate for this prototype but not for a
+  production financial ledger.
+- Persistence is a single local JSON snapshot and is not an append-only,
+  transactional or multi-process database.
+- Legacy research, news, options and backtest screens still contain illustrative
+  sample content; only the paper-trading pipeline and connected dashboard state
+  are operational.
+- Strategy Builder definitions and versions are persisted, but Phase 2 executes
+  only the built-in moving-average crossover strategy.
+
+Never use this project for real-money trading. Live trading is not implemented.

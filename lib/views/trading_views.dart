@@ -70,7 +70,7 @@ class DashboardView extends StatelessWidget {
       title: 'Trading Command Center',
       subtitle: 'Account: TRADER_PRO_01 | Last Update: Just Now',
       actions: [
-        const StatusIndicator(label: 'Broker', isConnected: true),
+        const StatusIndicator(label: 'Paper Simulator', isConnected: true),
         const SizedBox(width: 16),
         const StatusIndicator(label: 'Data', isConnected: true),
         const SizedBox(width: 24),
@@ -223,9 +223,9 @@ class DashboardView extends StatelessWidget {
                   onPressed: () => _showConfirmation(
                     context,
                     'EMERGENCY KILL',
-                    'Halt all bots and close all positions immediately?',
+                    'Block all new simulated orders immediately?',
                     () {
-                      state.showToast('KILL SWITCH ACTIVATED');
+                      state.activateEmergencyStop();
                     },
                   ),
                 ),
@@ -1246,7 +1246,7 @@ class PositionsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewContainer(
-      title: 'Live Inventory Positions',
+      title: 'Open Paper Positions',
       child: Card(
         child: state.positions.isEmpty
             ? const Center(child: Text('No active inventory positions open.'))
@@ -1322,9 +1322,12 @@ class OrdersView extends StatelessWidget {
       title: 'Order Fulfillment Registry',
       actions: [
         TradingButton(
-          label: 'Submit Mock Order',
-          onPressed: () =>
-              state.addOrder('BTC/USDT', 'BUY', 'LIMIT', 96000.0, 0.05),
+          label: state.isPaperEngineRunning
+              ? 'Stop Paper Engine'
+              : 'Start Paper Engine',
+          onPressed: () => state.isPaperEngineRunning
+              ? state.stopPaperEngine()
+              : state.startPaperEngine(),
         ),
       ],
       child: Card(
@@ -1606,7 +1609,7 @@ class RiskView extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 EmergencyKillButton(
-                  onPressed: () => state.showToast('KILL SWITCH ACTIVATED'),
+                  onPressed: () => state.activateEmergencyStop(),
                 ),
               ],
             ),
@@ -2178,59 +2181,22 @@ class BrokerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewContainer(
-      title: 'Exchange Gateway Broker Nodes',
-      child: ListView(
-        children: [
-          const Card(
-            child: ListTile(
-              leading: Icon(Icons.lan, color: TradingTheme.bullish),
-              title: Text(
-                'Binance Advanced API Stream Endpoint',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(
-                'Latency: 24ms | Protocol: WebSockets Secure (WSS)',
-              ),
-              trailing: StatusBadge(
-                label: 'CONNECTED',
-                color: TradingTheme.bullish,
-              ),
-            ),
+      title: 'Paper Execution Adapter',
+      child: const Card(
+        child: ListTile(
+          leading: Icon(Icons.science_outlined, color: TradingTheme.primary),
+          title: Text(
+            'Local deterministic simulator',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 12),
-          const Card(
-            child: ListTile(
-              leading: Icon(Icons.lan_outlined, color: TradingTheme.bullish),
-              title: Text(
-                'Coinbase Exchange Liquidity Core',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text('Latency: 45ms | Protocol: FIX 4.4 Engine'),
-              trailing: StatusBadge(
-                label: 'CONNECTED',
-                color: TradingTheme.bullish,
-              ),
-            ),
+          subtitle: Text(
+            'No broker is connected. No credentials are accepted. All fills are simulated locally with configured fees and slippage.',
           ),
-          const SizedBox(height: 12),
-          const Card(
-            child: ListTile(
-              leading: Icon(
-                Icons.lan_outlined,
-                color: TradingTheme.textSecondary,
-              ),
-              title: Text(
-                'Kraken Professional Backup Node',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text('Standby fallback routing channel offline'),
-              trailing: StatusBadge(
-                label: 'STANDBY',
-                color: TradingTheme.textSecondary,
-              ),
-            ),
+          trailing: StatusBadge(
+            label: 'PAPER ONLY',
+            color: TradingTheme.primary,
           ),
-        ],
+        ),
       ),
     );
   }
@@ -2268,11 +2234,9 @@ class SettingsView extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
-                  title: const Text(
-                    'Emergency Universal Liquidation Circuit Breaker',
-                  ),
+                  title: const Text('Persistent Paper-Trading Emergency Stop'),
                   subtitle: const Text(
-                    'Immediately flags clearance for all live positions globally if triggered',
+                    'Immediately blocks new simulated orders until explicitly reset',
                   ),
                   trailing: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -2280,13 +2244,10 @@ class SettingsView extends StatelessWidget {
                     ),
                     onPressed: () => _showConfirmation(
                       context,
-                      'Global Liquidation Circuit Breaker',
-                      'DANGER: Trigger global clearance immediately?',
+                      'Paper-Trading Emergency Stop',
+                      'Block every new simulated order?',
                       () {
-                        state.positions.clear();
-                        state.showToast(
-                          'Circuit breaker activated. All positions closed.',
-                        );
+                        state.activateEmergencyStop();
                       },
                     ),
                     child: const Text(

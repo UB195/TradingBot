@@ -1,10 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import '../application/paper_trading_controller.dart';
+import '../application/paper_trading_engine.dart';
+import '../data/strategy_persistence_mapper.dart';
+import '../data/trading_repositories.dart';
+import '../domain/paper_trading_models.dart' as paper;
 import '../models/trading_models.dart';
 import '../models/strategy_builder_models.dart';
 import '../services/mock_trading_service.dart';
 import '../services/mock_strategy_service.dart';
 
 class TradingState extends ChangeNotifier {
+  final PaperTradingController paperController;
   int _currentSectionIndex = 0;
   String _searchQuery = '';
   String _statusFilter = 'ALL';
@@ -12,6 +20,32 @@ class TradingState extends ChangeNotifier {
   int get currentSectionIndex => _currentSectionIndex;
   String get searchQuery => _searchQuery;
   String get statusFilter => _statusFilter;
+  paper.TradingSnapshot get paperSnapshot => paperController.snapshot;
+  bool get isPaperEngineRunning => paperController.isRunning;
+  bool get emergencyStopActive => paperController.emergencyStopActive;
+
+  TradingState({PaperTradingController? paperController})
+    : paperController = paperController ?? _newInMemoryController() {
+    this.paperController.addListener(_onPaperStateChanged);
+    _restoreStrategyData();
+    _syncPaperProjection();
+  }
+
+  static PaperTradingController _newInMemoryController() {
+    final snapshot = paper.TradingSnapshot.initial();
+    final repository = InMemoryTradingRepository(snapshot);
+    return PaperTradingController(
+      PaperTradingEngine(repository: repository, snapshot: snapshot),
+    );
+  }
+
+  static Future<TradingState> createPersistent() async {
+    final repository = SharedPreferencesTradingRepository();
+    final engine = await PaperTradingEngine.load(repository: repository);
+    final state = TradingState(paperController: PaperTradingController(engine));
+    await state.persistNow();
+    return state;
+  }
 
   final List<String> sections = [
     'Dashboard',
@@ -35,36 +69,12 @@ class TradingState extends ChangeNotifier {
 
   // Data lists
   List<MarketTicker> tickers = MockTradingService.getMockTickers();
-  List<TradingBot> bots = MockTradingService.getMockBots();
-  List<TradingPosition> positions = MockTradingService.getMockPositions();
-  List<MarketSignal> signals = MockTradingService.getMockSignals();
+  List<TradingBot> bots = [];
+  List<TradingPosition> positions = [];
+  List<MarketSignal> signals = [];
   RiskMetrics risk = MockTradingService.getMockRisk();
-  List<LogEntry> logs = MockTradingService.getMockLogs();
-
-  List<TradingOrder> orders = [
-    TradingOrder(
-      id: 'o1',
-      symbol: 'BTC/USDT',
-      type: 'LIMIT',
-      side: 'BUY',
-      price: 95000.0,
-      amount: 0.1,
-      filledAmount: 0.0,
-      status: 'PENDING',
-      timestamp: DateTime.now(),
-    ),
-    TradingOrder(
-      id: 'o2',
-      symbol: 'ETH/USDT',
-      type: 'MARKET',
-      side: 'SELL',
-      price: 3450.0,
-      amount: 1.5,
-      filledAmount: 1.5,
-      status: 'FILLED',
-      timestamp: DateTime.now().subtract(const Duration(hours: 1)),
-    ),
-  ];
+  List<LogEntry> logs = [];
+  List<TradingOrder> orders = [];
 
   List<PortfolioAsset> assets = [
     PortfolioAsset(
@@ -186,6 +196,162 @@ class TradingState extends ChangeNotifier {
   // Toast message tracking
   List<String> activeToasts = [];
 
+  double get paperCash => paperSnapshot.account.cash;
+  double get paperEquity => paperSnapshot.equity;
+  double get realizedPnl => paperSnapshot.account.realizedPnl;
+  double get unrealizedPnl => paperSnapshot.unrealizedPnl;
+
+  Future<void> startPaperEngine() async {
+    if (emergencyStopActive) {
+      showToast('Reset the emergency stop before starting the paper engine');
+      return;
+    }
+    await paperController.start();
+  }
+
+  Future<void> stopPaperEngine() => paperController.stop();
+
+  Future<void> activateEmergencyStop([
+    String reason = 'Activated by the user from the Paper Trading dashboard',
+  ]) => paperController.activateEmergencyStop(reason);
+
+  Future<void> resetEmergencyStop() => paperController.resetEmergencyStop();
+  Future<void> resetPaperAccount() => paperController.resetPaperAccount();
+
+  Future<void> persistNow() async {
+    _storeStrategyData();
+    await paperController.engine.persist();
+  }
+
+  void _restoreStrategyData() {
+    final snapshot = paperSnapshot;
+    if (snapshot.strategyDefinitions.isEmpty) {
+      _storeStrategyData();
+      return;
+    }
+    strategies = snapshot.strategyDefinitions
+        .map(StrategyPersistenceMapper.configFromJson)
+        .toList();
+    versionHistory = snapshot.strategyVersions.map(
+      (key, values) => MapEntry(
+        key,
+        values.map(StrategyPersistenceMapper.versionFromJson).toList(),
+      ),
+    );
+    final numericIds = strategies
+        .map((value) => int.tryParse(value.id.replaceAll(RegExp(r'\D'), '')))
+        .whereType<int>();
+    if (numericIds.isNotEmpty) {
+      _strategyIdCounter = numericIds.reduce((a, b) => a > b ? a : b);
+    }
+  }
+
+  void _storeStrategyData() {
+    paperSnapshot.strategyDefinitions = strategies
+        .map(StrategyPersistenceMapper.configToJson)
+        .toList();
+    paperSnapshot.strategyVersions = versionHistory.map(
+      (key, values) => MapEntry(
+        key,
+        values.map(StrategyPersistenceMapper.versionToJson).toList(),
+      ),
+    );
+  }
+
+  void _onPaperStateChanged() {
+    _syncPaperProjection();
+    notifyListeners();
+  }
+
+  void _syncPaperProjection() {
+    final snapshot = paperSnapshot;
+    bots = [
+      TradingBot(
+        id: snapshot.bot.id,
+        name: 'Paper MA Bot',
+        strategyName: snapshot.bot.strategyName,
+        marketSymbol: snapshot.bot.symbol,
+        status: snapshot.bot.status.name.toUpperCase(),
+        netProfit: snapshot.account.realizedPnl + snapshot.unrealizedPnl,
+        allocation: snapshot.account.startingCash,
+        runtime: 'Replay session',
+      ),
+    ];
+    positions = snapshot.openPositions
+        .map(
+          (position) => TradingPosition(
+            id: position.id,
+            symbol: position.symbol,
+            side: position.quantity >= 0 ? 'LONG' : 'SHORT',
+            entryPrice: position.averageEntryPrice,
+            markPrice: position.markPrice,
+            size: position.quantity.abs(),
+            pnl: position.unrealizedPnl,
+            pnlPercent: position.averageEntryPrice == 0
+                ? 0
+                : position.unrealizedPnl /
+                      (position.quantity.abs() * position.averageEntryPrice) *
+                      100,
+            leverage: 1,
+          ),
+        )
+        .toList();
+    orders = snapshot.orders
+        .map(
+          (order) => TradingOrder(
+            id: order.id,
+            symbol: order.symbol,
+            type: 'PAPER MARKET',
+            side: order.side.name.toUpperCase(),
+            price: order.requestedPrice,
+            amount: order.quantity,
+            filledAmount: order.status == paper.PaperOrderStatus.filled
+                ? order.quantity
+                : 0,
+            status: order.status.name.toUpperCase(),
+            timestamp: order.createdAt,
+          ),
+        )
+        .toList();
+    signals = snapshot.orders
+        .take(10)
+        .map(
+          (order) => MarketSignal(
+            id: order.signalId,
+            symbol: order.symbol,
+            type: order.side.name.toUpperCase(),
+            source: snapshot.bot.strategyName,
+            strength: 1,
+            price: order.requestedPrice,
+            timestamp: order.createdAt,
+          ),
+        )
+        .toList();
+    logs = snapshot.events
+        .map(
+          (event) => LogEntry(
+            id: event.id,
+            timestamp: event.timestamp,
+            type: event.type.contains('REJECTED') ? 'WARNING' : 'INFO',
+            source: 'PAPER_ENGINE',
+            message: event.message,
+          ),
+        )
+        .toList();
+    assets = [
+      PortfolioAsset(
+        asset: 'USD',
+        name: 'Paper Cash',
+        balance: snapshot.account.cash,
+        available: snapshot.account.cash,
+        valueUsd: snapshot.account.cash,
+        allocationPercent: snapshot.equity == 0
+            ? 0
+            : snapshot.account.cash / snapshot.equity * 100,
+      ),
+    ];
+  }
+
   void setSection(int index) {
     if (index >= 0 && index < sections.length) {
       _currentSectionIndex = index;
@@ -213,54 +379,28 @@ class TradingState extends ChangeNotifier {
   }
 
   void toggleBotStatus(String botId) {
-    final index = bots.indexWhere((b) => b.id == botId);
-    if (index != -1) {
-      final currentBot = bots[index];
-      String newStatus = 'RUNNING';
-      if (currentBot.status == 'RUNNING') {
-        newStatus = 'PAUSED';
-      } else if (currentBot.status == 'PAUSED') {
-        newStatus = 'STOPPED';
-      }
-      bots[index] = TradingBot(
-        id: currentBot.id,
-        name: currentBot.name,
-        strategyName: currentBot.strategyName,
-        marketSymbol: currentBot.marketSymbol,
-        status: newStatus,
-        netProfit: currentBot.netProfit,
-        allocation: currentBot.allocation,
-        runtime: currentBot.runtime,
-      );
-      showToast('Bot ${currentBot.name} status changed to $newStatus');
-      notifyListeners();
+    if (botId != paperSnapshot.bot.id) return;
+    if (isPaperEngineRunning) {
+      unawaited(stopPaperEngine());
+      showToast('Paper engine stopped');
+    } else if (emergencyStopActive) {
+      showToast('Reset the emergency stop before starting the paper engine');
+    } else {
+      unawaited(startPaperEngine());
+      showToast('Paper engine started');
     }
   }
 
   void closePosition(String positionId) {
-    positions.removeWhere((p) => p.id == positionId);
-    showToast('Position $positionId closed successfully');
-    notifyListeners();
+    showToast(
+      'Direct position mutation is disabled; positions change through paper fills only.',
+    );
   }
 
   void cancelOrder(String orderId) {
-    final index = orders.indexWhere((o) => o.id == orderId);
-    if (index != -1) {
-      final o = orders[index];
-      orders[index] = TradingOrder(
-        id: o.id,
-        symbol: o.symbol,
-        type: o.type,
-        side: o.side,
-        price: o.price,
-        amount: o.amount,
-        filledAmount: o.filledAmount,
-        status: 'CANCELLED',
-        timestamp: o.timestamp,
-      );
-      showToast('Order ${o.id} cancelled');
-      notifyListeners();
-    }
+    showToast(
+      'Paper market orders fill or reject immediately and cannot be cancelled.',
+    );
   }
 
   void addOrder(
@@ -270,20 +410,9 @@ class TradingState extends ChangeNotifier {
     double price,
     double amount,
   ) {
-    final newOrder = TradingOrder(
-      id: 'o${orders.length + 1}',
-      symbol: symbol,
-      type: type,
-      side: side,
-      price: price,
-      amount: amount,
-      filledAmount: 0.0,
-      status: 'PENDING',
-      timestamp: DateTime.now(),
+    showToast(
+      'Manual orders are disabled; start the deterministic paper engine instead.',
     );
-    orders.insert(0, newOrder);
-    showToast('New $side $type order placed for $symbol');
-    notifyListeners();
   }
 
   // ---------------------------------------------------------------------
@@ -306,6 +435,7 @@ class TradingState extends ChangeNotifier {
       ),
     ];
     showToast('Strategy "${config.name}" saved as ${config.version}');
+    unawaited(persistNow());
     notifyListeners();
   }
 
@@ -325,6 +455,7 @@ class TradingState extends ChangeNotifier {
       ),
     );
     showToast('Strategy "${config.name}" updated to ${config.version}');
+    unawaited(persistNow());
     notifyListeners();
   }
 
@@ -347,6 +478,14 @@ class TradingState extends ChangeNotifier {
       ),
     ];
     showToast('Strategy duplicated as "${copy.name}"');
+    unawaited(persistNow());
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    paperController.removeListener(_onPaperStateChanged);
+    paperController.dispose();
+    super.dispose();
   }
 }
