@@ -5,9 +5,12 @@ import 'components/side_navigation.dart';
 import 'components/top_market_ticker.dart';
 import 'components/custom_widgets.dart';
 import 'views/trading_views.dart';
+import 'views/paper_trading_dashboard.dart';
 
-void main() {
-  runApp(const TradingBotApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final state = await TradingState.createPersistent();
+  runApp(TradingBotApp(state: state));
 }
 
 class TradingBotApp extends StatelessWidget {
@@ -19,7 +22,7 @@ class TradingBotApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Advanced Algorithmic Trading Platform',
+      title: 'TradingBot Paper Trading',
       theme: TradingTheme.darkTheme,
       debugShowCheckedModeBanner: false,
       home: MainLayoutScreen(state: state),
@@ -48,7 +51,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   Widget _buildActiveView(int index) {
     switch (index) {
       case 0:
-        return DashboardView(state: _state);
+        return PaperTradingDashboardView(state: _state);
       case 1:
         return MarketsView(state: _state);
       case 2:
@@ -82,7 +85,7 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
       case 16:
         return SettingsView(state: _state);
       default:
-        return DashboardView(state: _state);
+        return PaperTradingDashboardView(state: _state);
     }
   }
 
